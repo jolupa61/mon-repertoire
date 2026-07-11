@@ -133,7 +133,14 @@
         });
     }
 
-    function filtrerContacts(lettre) {
+        function filtrerContacts(lettre) {
+        // Nettoyage de la fiche contact
+        const zoneFiche = document.getElementById("zoneFiche");
+        if (zoneFiche) {
+            zoneFiche.className = "fiche-vide";
+            zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
+        }
+
         const zoneListe = document.getElementById("zoneListe");
         if (!zoneListe) return;
         zoneListe.innerHTML = "";
