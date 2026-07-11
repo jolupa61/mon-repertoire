@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Répertoire de A à Z</title>
-    
-    <link rel="icon" type="image/png" href="favicon.png"><head>
     <link rel="icon" type="image/png" href="favicon.png">
-    <!-- NOUVELLE LIGNE POUR L'ÉCRAN D'ACCUEIL IPHONE -->
-    <link rel="apple-touch-icon" href="favicon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Répertoire de A à Z</title>
+    <link class="apple-touch-icon" href="favicon.png">
     <style>
         /* --- DESIGN GÉNÉRAL ET POLICES --- */
         body {
@@ -156,10 +150,10 @@
         }
         .fiche-active {
             background: white;
-            padding: 40px; /* Plus d'espace interne */
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            max-width: 700px; /* Évite que la fiche s'étale trop sur grand écran */
+            max-width: 700px;
             margin: 0 auto;
         }
         .fiche-header {
@@ -170,7 +164,7 @@
             padding-bottom: 25px;
         }
         .contact-photo {
-            width: 110px; /* Photo plus grande */
+            width: 110px;
             height: 110px;
             border-radius: 50%;
             object-fit: cover;
@@ -179,19 +173,28 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .fiche-header h3 {
-            font-size: 2.2rem; /* Nom du contact beaucoup plus grand */
+            font-size: 2.2rem;
             margin: 0;
             color: #2c3e50;
         }
         .fiche-details p {
-            font-size: 1.4rem; /* Textes des coordonnées agrandis */
+            font-size: 1.4rem;
             margin: 20px 0;
             line-height: 1.6;
         }
         .fiche-details strong {
             color: #34495e;
             display: inline-block;
-            min-width: 140px; /* Aligne proprement les labels */
+            min-width: 140px;
+        }
+        /* Style pour les liens de numéros de téléphone */
+        .lien-tel {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .lien-tel:hover {
+            text-decoration: underline;
         }
         .fiche-actions {
             margin-top: 40px;
@@ -199,7 +202,7 @@
             padding-top: 20px;
         }
         .btn-action {
-            padding: 12px 24px; /* Boutons d'action plus grands */
+            padding: 12px 24px;
             border: none;
             border-radius: 6px;
             font-weight: bold;
@@ -467,11 +470,23 @@
         });
     }
 
+    function nettoiementTel(numero) {
+        return numero ? numero.replace(/[^0-9+]/g, '') : '';
+    }
+
     function afficherFiche(contact) {
         const zoneFiche = document.getElementById("zoneFiche");
         if (!zoneFiche) return;
         const photoAffichage = contact.photo ? contact.photo : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         
+        // Nettoyage des numéros pour les liens cliquables (supprime les espaces)
+        const lienFixe = nettoiementTel(contact.fixe);
+        const lienMobile = nettoiementTel(contact.mobile);
+
+        // Préparation de l'affichage HTML avec les liens cliquables
+        const affichageFixe = contact.fixe ? `<a href="tel:${lienFixe}" class="lien-tel">${contact.fixe}</a>` : 'Non renseigné';
+        const affichageMobile = contact.mobile ? `<a href="tel:${lienMobile}" class="lien-tel">${contact.mobile}</a>` : 'Non renseigné';
+
         zoneFiche.className = "fiche-active";
         zoneFiche.innerHTML = `
             <div class="fiche-header">
@@ -479,9 +494,9 @@
                 <h3>${contact.nom}</h3>
             </div>
             <div class="fiche-details">
-                <p><strong>📞 Fixe :</strong> ${contact.fixe}</p>
-                <p><strong>📱 Mobile :</strong> ${contact.mobile}</p>
-                <p><strong>🏠 Adresse :</strong> ${contact.adresse}</p>
+                <p><strong>📞 Fixe :</strong> ${affichageFixe}</p>
+                <p><strong>📱 Mobile :</strong> ${affichageMobile}</p>
+                <p><strong>🏠 Adresse :</strong> ${contact.adresse ? contact.adresse : 'Non renseignée'}</p>
             </div>
             <div class="fiche-actions">
                 <button class="btn-action btn-modifier" onclick="ouvrirFormulaireModifier(${contact.id})">✏️ Modifier</button>
@@ -489,10 +504,6 @@
             </div>
         `;
         document.getElementById("ficheContact").classList.add("mobile-active");
-    }
-
-    function abrirFormulaireAjouter() {
-        ouvrirFormulaireAjouter();
     }
 
     function ouvrirFormulaireAjouter() {
