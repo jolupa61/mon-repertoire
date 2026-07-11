@@ -1,5 +1,11 @@
 // 1. Initialisation des contacts (charge depuis la mémoire du navigateur, ou utilise la base par défaut)
-let contacts = JSON.parse(localStorage.getItem("mes_contacts"));
+// 1. Initialisation sécurisée pour iOS/Safari
+let contacts = null;
+try {
+    contacts = JSON.parse(localStorage.getItem("mes_contacts"));
+} catch (e) {
+    console.log("Le stockage local est bloqué par l'appareil.");
+}
 
 if (!contacts || contacts.length === 0) {
     contacts = [
