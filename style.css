@@ -109,3 +109,64 @@ body {
     background: #f9fbfd;
     overflow-y: auto;
 }
+/* --- Styles pour les listes et les fiches contacts --- */
+.ligne-contact {
+    padding: 12px 15px;
+    background: #f8f9fa;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    border-left: 4px solid #3498db;
+    font-weight: 500;
+}
+
+.ligne-contact:hover {
+    background: #e8f4fd;
+    transform: translateX(4px);
+}
+
+.fiche-vide {
+    text-align: center;
+    color: #7f8c8d;
+    margin-top: 50px;
+    font-style: italic;
+}
+
+.fiche-active {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+.fiche-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 2px solid #f4f6f9;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.contact-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #3498db;
+}
+
+.fiche-header h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+.fiche-details p {
+    font-size: 1.05rem;
+    margin-bottom: 15px;
+    color: #34495e;
+    line-height: 1.6;
+}
