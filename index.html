@@ -4,11 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Répertoire de A à Z</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- Styles spécifiques pour l'affichage plein écran sur Mobile --- */
+        @media (max-width: 768px) {
+            /* L'application prend tout l'espace */
+            .app-container {
+                display: block !important;
+                position: relative;
+            }
+            /* Par défaut, on cache la zone de la fiche sur mobile */
+            .fiche-contact {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100% !important;
+                height: calc(100vh - 60px);
+                background-color: white;
+                z-index: 10;
+                padding: 15px !important;
+                box-sizing: border-box;
+            }
+            /* Quand la fiche est active, on l'affiche en grand */
+            .fiche-contact.mobile-active {
+                display: block !important;
+            }
+            /* Style pour le bouton retour de la fiche */
+            .btn-retour-liste {
+                display: inline-block;
+                background-color: #7f8c8d;
+                color: white;
+                border: none;
+                padding: 8px 15px;
+                border-radius: 4px;
+                font-weight: bold;
+                margin-bottom: 15px;
+                cursor: pointer;
+            }
+        }
+        /* Masquer le bouton retour liste sur ordinateur */
+        @media (min-width: 769px) {
+            .btn-retour-liste {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- PAGE DE GARDE -->
     <div id="pageGarde" class="page-garde">
         <div class="contenu-garde">
             <h1>Mon Répertoire</h1>
@@ -17,15 +61,11 @@
         </div>
     </div>
 
-    <!-- APPLICATION -->
     <div class="app-container cacher">
-        <!-- BOUTON RETOUR PAGE DE GARDE -->
         <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪 Quitter</button>
 
-        <!-- 1. Onglets A-Z -->
         <nav class="onglets-az" id="ongletsAZ"></nav>
 
-        <!-- 2. Liste des Contacts -->
         <section class="liste-contacts">
             <div class="liste-header">
                 <h2>Contacts</h2>
@@ -34,8 +74,8 @@
             <div id="zoneListe"></div>
         </section>
 
-        <!-- 3. Fiche Détail -->
         <section class="fiche-contact" id="ficheContact">
+            <button onclick="retourALaListe()" class="btn-retour-liste">⬅️ Retour à la liste</button>
             <h2>Détails du Contact</h2>
             <div id="zoneFiche" class="fiche-vide">
                 <p>Sélectionnez un contact pour afficher ses coordonnées.</p>
@@ -43,7 +83,6 @@
         </section>
     </div>
 
-    <!-- POP-UP FORMULAIRE (Ajout/Modification) -->
     <div id="zoneFormulaire" class="modal-formulaire cacher">
         <div class="contenu-formulaire">
             <h3 id="formTitre">Nouveau Contact</h3>
@@ -71,7 +110,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT APPLICATION -->
     <script>
     let contacts = null;
     try {
@@ -89,7 +127,7 @@
         sauvegarder();
     }
 
-    let lettreActive = "A";
+    let lettreActive = "";
     let contactEnCoursDeModification = null;
 
     function sauvegarder() {
@@ -98,15 +136,14 @@
         } catch (e) {}
     }
 
-        function ouvrirRepertoire() {
+    function ouvrirRepertoire() {
         document.getElementById("pageGarde").classList.add("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.remove("cacher");
         
-        // On remet la lettre à vide au démarrage pour ne rien afficher
         lettreActive = ""; 
         genererAlphabet();
+        retourALaListe(); // S'assure que la fiche est cachée au départ sur mobile
         
-        // On vide la colonne de gauche tant qu'aucun onglet n'est cliqué
         const zoneListe = document.getElementById("zoneListe");
         if (zoneListe) {
             zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Choisissez une lettre pour afficher les contacts.</p>`;
@@ -116,12 +153,18 @@
     function fermerRepertoire() {
         document.getElementById("pageGarde").classList.remove("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.add("cacher");
+        retourALaListe();
         
         const zoneFiche = document.getElementById("zoneFiche");
         if (zoneFiche) {
             zoneFiche.className = "fiche-vide";
             zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
         }
+    }
+
+    function retourALaListe() {
+        // Enlève le mode plein écran de la fiche sur mobile
+        document.getElementById("ficheContact").classList.remove("mobile-active");
     }
 
     function genererAlphabet() {
@@ -136,13 +179,13 @@
                 lettreActive = lettre;
                 genererAlphabet();
                 filtrerContacts(lettre);
+                retourALaListe(); // Ferme la fiche si on change de lettre
             };
             zoneOnglets.appendChild(bouton);
         });
     }
 
-        function filtrerContacts(lettre) {
-        // Nettoyage de la fiche contact
+    function filtrerContacts(lettre) {
         const zoneFiche = document.getElementById("zoneFiche");
         if (zoneFiche) {
             zoneFiche.className = "fiche-vide";
@@ -191,6 +234,9 @@
                 <button class="btn-action btn-supprimer" onclick="supprimerContact(${contact.id})">🗑️ Supprimer</button>
             </div>
         `;
+
+        // Force l'apparition en plein écran sur Mobile
+        document.getElementById("ficheContact").classList.add("mobile-active");
     }
 
     function ouvrirFormulaireAjouter() {
@@ -262,11 +308,7 @@
             contacts = contacts.filter(c => c.id !== id);
             sauvegarder();
             filtrerContacts(lettreActive);
-            const zoneFiche = document.getElementById("zoneFiche");
-            if (zoneFiche) {
-                zoneFiche.className = "fiche-vide";
-                zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
-            }
+            retourALaListe();
         }
     }
     </script>
