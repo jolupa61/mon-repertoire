@@ -132,11 +132,11 @@
             color: #3498db;
         }
 
-        /* 3. Fiche Détail (Droite sur ordi) */
+        /* 3. Fiche Détail (AGRANDIE) */
         .fiche-contact {
             flex: 1;
             background-color: #f5f6fa;
-            padding: 60px 30px 30px 30px;
+            padding: 60px 40px 40px 40px;
             overflow-y: auto;
             box-sizing: border-box;
         }
@@ -144,42 +144,60 @@
             text-align: center;
             color: #7f8c8d;
             margin-top: 50px;
+            font-size: 1.2rem;
         }
         .fiche-active {
             background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 40px; /* Plus d'espace interne */
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 700px; /* Évite que la fiche s'étale trop sur grand écran */
+            margin: 0 auto;
         }
         .fiche-header {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f5f6fa;
+            padding-bottom: 25px;
         }
         .contact-photo {
-            width: 70px;
-            height: 70px;
+            width: 110px; /* Photo plus grande */
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
-            margin-right: 20px;
+            margin-right: 30px;
             background-color: #eee;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .fiche-header h3 {
+            font-size: 2.2rem; /* Nom du contact beaucoup plus grand */
+            margin: 0;
+            color: #2c3e50;
         }
         .fiche-details p {
-            font-size: 1.1rem;
-            margin: 12px 0;
+            font-size: 1.4rem; /* Textes des coordonnées agrandis */
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .fiche-details strong {
+            color: #34495e;
+            display: inline-block;
+            min-width: 140px; /* Aligne proprement les labels */
         }
         .fiche-actions {
-            margin-top: 25px;
+            margin-top: 40px;
+            border-top: 1px solid #f5f6fa;
+            padding-top: 20px;
         }
         .btn-action {
-            padding: 8px 16px;
+            padding: 12px 24px; /* Boutons d'action plus grands */
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 15px;
+            font-size: 1.1rem;
         }
         .btn-modifier { background-color: #f1c40f; color: white; }
         .btn-supprimer { background-color: #e74c3c; color: white; }
@@ -245,16 +263,37 @@
             .fiche-contact.mobile-active {
                 display: block !important;
             }
+            .fiche-active {
+                padding: 20px;
+                box-shadow: none;
+            }
+            .contact-photo {
+                width: 90px;
+                height: 90px;
+                margin-right: 20px;
+            }
+            .fiche-header h3 {
+                font-size: 1.8rem;
+            }
+            .fiche-details p {
+                font-size: 1.2rem;
+            }
+            .fiche-details strong {
+                min-width: auto;
+                display: block;
+                margin-bottom: 4px;
+            }
             .btn-retour-liste {
                 display: inline-block !important;
                 background-color: #7f8c8d;
                 color: white;
                 border: none;
-                padding: 10px 15px;
-                border-radius: 4px;
+                padding: 12px 20px;
+                border-radius: 6px;
                 font-weight: bold;
                 margin-bottom: 20px;
                 cursor: pointer;
+                font-size: 1.1rem;
             }
         }
 
@@ -442,6 +481,10 @@
             </div>
         `;
         document.getElementById("ficheContact").classList.add("mobile-active");
+    }
+
+    function abrirFormulaireAjouter() {
+        ouvrirFormulaireAjouter();
     }
 
     function ouvrirFormulaireAjouter() {
