@@ -121,23 +121,51 @@ function fermerFormulaire() {
 function soumettreFormulaire(event) {
     event.preventDefault();
 
-    const nouveauContact = {
-        id: contactEnCoursDeModification ? contactEnCoursDeModification : Date.now(),
-        nom: document.getElementById("inputNom").value,
-        fixe: document.getElementById("inputFixe").value,
-        mobile: document.getElementById("inputMobile").value,
-        adresse: document.getElementById("inputAdresse").value,
-        photo: document.getElementById("inputPhoto").value
-    };
+    const fichierPhoto = document.getElementById("inputPhoto").files[0];
+    
+    // Fonction interne pour enregistrer le contact une fois la photo traitée
+    function enregistrerLeContact(photoData) {
+        const nouveauContact = {
+            id: contactEnCoursDeModification ? contactEnCoursDeModification : Date.now(),
+            nom: document.getElementById("inputNom").value,
+            fixe: document.getElementById("inputFixe").value,
+            mobile: document.getElementById("inputMobile").value,
+            adresse: document.getElementById("inputAdresse").value,
+            photo: photoData // Contiendra l'image locale convertie ou l'ancienne photo
+        };
 
-    if (contactEnCoursDeModification) {
-        // Mode modification : on remplace l'ancien par le nouveau
-        contacts = contacts.map(c => c.id === contactEnCoursDeModification ? nouveauContact : c);
-    } else {
-        // Mode ajout : on l'ajoute à la liste
-        contacts.push(nouveauContact);
+        if (contactEnCoursDeModification) {
+            // Si on modifie et qu'aucune nouvelle photo n'a été choisie, on garde l'ancienne
+            if (!fichierPhoto) {
+                const ancienContact = contacts.find(c => c.id === contactEnCoursDeModification);
+                nouveauContact.photo = ancienContact ?  ancienContact.photo : "";
+            }
+            contacts = contacts.map(c => c.id === contactEnCoursDeModification ? nouveauContact : c);
+        } else {
+            contacts.push(nouveauContact);
+        }
+
+        sauvegarder();
+        fermerFormulaire();
+        
+        lettreActive = nouveauContact.nom.charAt(0).toUpperCase();
+        genererAlphabet();
+        filtrerContacts(lettreActive);
+        afficherFiche(nouveauContact);
     }
 
+    // Si l'utilisateur a sélectionné une photo locale, on la convertit en texte lisible par le navigateur
+    if (fichierPhoto) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            enregistrerLeContact(e.target.result); // e.target.result contient l'image convertie
+        };
+        reader.readAsDataURL(fichierPhoto);
+    } else {
+        // Si pas de nouvelle photo sélectionnée
+        enregistrerLeContact("");
+    }
+}
     sauvegarder();
     fermerFormulaire();
     
