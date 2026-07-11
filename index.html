@@ -8,7 +8,17 @@
 </head>
 <body>
 
-    <div class="app-container">
+    <!-- PAGE DE GARDE -->
+    <div id="pageGarde" class="page-garde">
+        <div class="contenu-garde">
+            <h1>Mon Répertoire</h1>
+            <p>Votre carnet d'adresses de A à Z</p>
+            <button onclick="ouvrirRepertoire()" class="btn-entrer">Ouvrir le répertoire</button>
+        </div>
+    </div>
+
+    <!-- APPLICATION (Masquée au début) -->
+    <div class="app-container cacher">
         <!-- 1. Colonne des Onglets de A à Z -->
         <nav class="onglets-az" id="ongletsAZ">
             <!-- Les lettres de A à Z seront générées ici par le JavaScript -->
