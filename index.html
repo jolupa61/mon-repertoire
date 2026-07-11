@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- PAGE DE GARDE -->
     <div id="pageGarde" class="page-garde">
         <div class="contenu-garde">
             <h1>Mon Répertoire</h1>
@@ -17,26 +16,50 @@
         </div>
     </div>
 
-    <!-- APPLICATION (Masquée au début) -->
     <div class="app-container cacher">
-        <!-- 1. Colonne des Onglets de A à Z -->
-        <nav class="onglets-az" id="ongletsAZ">
-            <!-- Les lettres de A à Z seront générées ici par le JavaScript -->
-        </nav>
+        <nav class="onglets-az" id="ongletsAZ"></nav>
 
-        <!-- 2. Colonne de la Liste des Noms -->
         <section class="liste-contacts">
-            <h2>Contacts</h2>
-            <div id="zoneListe"><!-- Les lignes cliquables apparaîtront ici --></div>
+            <div class="liste-header">
+                <h2>Contacts</h2>
+                <button class="btn-ajouter-contact" onclick="ouvrirFormulaireAjouter()">➕ Ajouter</button>
+            </div>
+            <div id="zoneListe"></div>
         </section>
 
-        <!-- 3. Colonne de la Fiche Détail -->
         <section class="fiche-contact" id="ficheContact">
             <h2>Détails du Contact</h2>
             <div id="zoneFiche" class="fiche-vide">
                 <p>Sélectionnez un contact pour afficher ses coordonnées.</p>
             </div>
         </section>
+    </div>
+
+    <div id="zoneFormulaire" class="modal-formulaire cacher">
+        <div class="contenu-formulaire">
+            <h3 id="formTitre">Nouveau Contact</h3>
+            <form id="formContact" onsubmit="soumettreFormulaire(event)">
+                <label>Nom et Prénom :</label>
+                <input type="text" id="inputNom" required placeholder="Ex: Dupont Jean">
+
+                <label>Téléphone Fixe :</label>
+                <input type="text" id="inputFixe" placeholder="Ex: 01 02 03 04 05">
+
+                <label>Téléphone Mobile :</label>
+                <input type="text" id="inputMobile" placeholder="Ex: 06 07 08 09 10">
+
+                <label>Adresse postale :</label>
+                <input type="text" id="inputAdresse" placeholder="Ex: 12 rue de la paix">
+
+                <label>Lien de la photo (URL) :</label>
+                <input type="url" id="inputPhoto" placeholder="Ex: https://lien-image.com/photo.jpg">
+
+                <div class="form-boutons">
+                    <button type="button" class="btn-annuler" onclick="fermerFormulaire()">Annuler</button>
+                    <button type="submit" class="btn-valider">Enregistrer</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
