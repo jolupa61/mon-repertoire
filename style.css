@@ -288,3 +288,27 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+/* --- Bouton Retour Page de Garde en haut à droite --- */
+.btn-retour-garde {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-retour-garde:hover {
+    background-color: #c0392b;
+}
+
+.liste-contacts {
+    padding-top: 60px !important; 
+}
