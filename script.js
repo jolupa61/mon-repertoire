@@ -1,12 +1,12 @@
-// 1. Initialisation des contacts (charge depuis la mémoire du navigateur, ou utilise la base par défaut)
-// 1. Initialisation sécurisée pour iOS/Safari
+// 1. Initialisation sécurisée pour tous les appareils (y compris iOS/Safari)
 let contacts = null;
 try {
     contacts = JSON.parse(localStorage.getItem("mes_contacts"));
 } catch (e) {
-    console.log("Le stockage local est bloqué par l'appareil.");
+    console.log("Le stockage local est restreint.");
 }
 
+// Si la mémoire est vide ou inaccessible, on charge les contacts par défaut
 if (!contacts || contacts.length === 0) {
     contacts = [
         { id: 1, nom: "Abid Amine", fixe: "01 23 45 67 89", mobile: "06 12 34 56 78", adresse: "12 Rue de Paris, 75001 Paris", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" },
@@ -20,7 +20,11 @@ let lettreActive = "A";
 let contactEnCoursDeModification = null;
 
 function sauvegarder() {
-    localStorage.setItem("mes_contacts", JSON.stringify(contacts));
+    try {
+        localStorage.setItem("mes_contacts", JSON.stringify(contacts));
+    } catch (e) {
+        console.log("Impossible de sauvegarder dans le stockage local.");
+    }
 }
 
 // 2. Page de garde
@@ -33,13 +37,17 @@ function ouvrirRepertoire() {
 
 function genererAlphabet() {
     const zoneOnglets = document.getElementById("ongletsAZ");
+    if (!zoneOnglets) return;
     zoneOnglets.innerHTML = "";
+    
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     
     alphabet.forEach(lettre => {
         const bouton = document.createElement("button");
         bouton.textContent = lettre;
-        if(lettre === lettreActive) bouton.style.color = "#3498db";
+        if (lettre === lettreActive) {
+            bouton.style.color = "#3498db";
+        }
         bouton.onclick = () => {
             lettreActive = lettre;
             genererAlphabet();
@@ -52,16 +60,16 @@ function genererAlphabet() {
 // 3. Afficher la liste
 function filtrerContacts(lettre) {
     const zoneListe = document.getElementById("zoneListe");
+    if (!zoneListe) return;
     zoneListe.innerHTML = "";
     
-    const contactsFiltres = contacts.filter(c => c.nom.toUpperCase().startsWith(lettre));
+    const contactsFiltres = contacts.filter(c => c.nom && c.nom.toUpperCase().startsWith(lettre));
     
     if (contactsFiltres.length === 0) {
         zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px;">Aucun contact en ${lettre}</p>`;
         return;
     }
     
-    // Trier par ordre alphabétique
     contactsFiltres.sort((a, b) => a.nom.localeCompare(b.nom));
 
     contactsFiltres.forEach(contact => {
@@ -76,6 +84,8 @@ function filtrerContacts(lettre) {
 // 4. Afficher les détails d'un contact
 function afficherFiche(contact) {
     const zoneFiche = document.getElementById("zoneFiche");
+    if (!zoneFiche) return;
+    
     const photoAffichage = contact.photo ? contact.photo : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
     
     zoneFiche.className = "fiche-active";
@@ -115,7 +125,7 @@ function ouvrirFormulaireModifier(id) {
     document.getElementById("inputFixe").value = contact.fixe;
     document.getElementById("inputMobile").value = contact.mobile;
     document.getElementById("inputAdresse").value = contact.adresse;
-    document.getElementById("inputPhoto").value = contact.photo;
+    // On ne peut pas pré-remplir un input type="file" pour des raisons de sécurité
 
     document.getElementById("zoneFormulaire").classList.remove("cacher");
 }
@@ -129,7 +139,6 @@ function soumettreFormulaire(event) {
 
     const fichierPhoto = document.getElementById("inputPhoto").files[0];
     
-    // Fonction interne pour enregistrer le contact une fois la photo traitée
     function enregistrerLeContact(photoData) {
         const nouveauContact = {
             id: contactEnCoursDeModification ? contactEnCoursDeModification : Date.now(),
@@ -137,14 +146,13 @@ function soumettreFormulaire(event) {
             fixe: document.getElementById("inputFixe").value,
             mobile: document.getElementById("inputMobile").value,
             adresse: document.getElementById("inputAdresse").value,
-            photo: photoData // Contiendra l'image locale convertie ou l'ancienne photo
+            photo: photoData
         };
 
         if (contactEnCoursDeModification) {
-            // Si on modifie et qu'aucune nouvelle photo n'a été choisie, on garde l'ancienne
             if (!fichierPhoto) {
                 const ancienContact = contacts.find(c => c.id === contactEnCoursDeModification);
-                nouveauContact.photo = ancienContact ?  ancienContact.photo : "";
+                nouveauContact.photo = ancienContact ? ancienContact.photo : "";
             }
             contacts = contacts.map(c => c.id === contactEnCoursDeModification ? nouveauContact : c);
         } else {
@@ -154,32 +162,23 @@ function soumettreFormulaire(event) {
         sauvegarder();
         fermerFormulaire();
         
-        lettreActive = nouveauContact.nom.charAt(0).toUpperCase();
+        if (nouveauContact.nom) {
+            lettreActive = nouveauContact.nom.charAt(0).toUpperCase();
+        }
         genererAlphabet();
         filtrerContacts(lettreActive);
         afficherFiche(nouveauContact);
     }
 
-    // Si l'utilisateur a sélectionné une photo locale, on la convertit en texte lisible par le navigateur
     if (fichierPhoto) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            enregistrerLeContact(e.target.result); // e.target.result contient l'image convertie
+            enregistrerLeContact(e.target.result);
         };
         reader.readAsDataURL(fichierPhoto);
     } else {
-        // Si pas de nouvelle photo sélectionnée
         enregistrerLeContact("");
     }
-}
-    sauvegarder();
-    fermerFormulaire();
-    
-    // Forcer la liste à se mettre à jour sur la première lettre du nom saisi
-    lettreActive = nouveauContact.nom.charAt(0).toUpperCase();
-    genererAlphabet();
-    filtrerContacts(lettreActive);
-    afficherFiche(nouveauContact);
 }
 
 // 6. Supprimer un contact
@@ -189,9 +188,10 @@ function supprimerContact(id) {
         sauvegarder();
         filtrerContacts(lettreActive);
         
-        // Remettre la fiche à l'état vide
         const zoneFiche = document.getElementById("zoneFiche");
-        zoneFiche.className = "fiche-vide";
-        zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
+        if (zoneFiche) {
+            zoneFiche.className = "fiche-vide";
+            zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
+        }
     }
 }
