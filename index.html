@@ -1,1 +1,34 @@
-<h1>Mon Répertoire de A à Z</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Répertoire de A à Z</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 1. Colonne des Onglets de A à Z -->
+        <nav class="onglets-az" id="ongletsAZ">
+            <!-- Les lettres de A à Z seront générées ici par le JavaScript -->
+        </nav>
+
+        <!-- 2. Colonne de la Liste des Noms -->
+        <section class="liste-contacts">
+            <h2>Contacts</h2>
+            <div id="zoneListe"><!-- Les lignes cliquables apparaîtront ici --></div>
+        </section>
+
+        <!-- 3. Colonne de la Fiche Détail -->
+        <section class="fiche-contact" id="ficheContact">
+            <h2>Détails du Contact</h2>
+            <div id="zoneFiche" class="fiche-vide">
+                <p>Sélectionnez un contact pour afficher ses coordonnées.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
