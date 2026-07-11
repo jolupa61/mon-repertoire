@@ -4,57 +4,249 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Répertoire de A à Z</title>
-    <link rel="stylesheet" href="style.css?v=3">
     <style>
-        /* --- Styles spécifiques pour l'affichage plein écran sur Mobile --- */
+        /* --- DESIGN GÉNÉRAL ET POLICES --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f6fa;
+            color: #2c3e50;
+        }
+
+        .cacher {
+            display: none !important;
+        }
+
+        /* --- PAGE DE GARDE --- */
+        .page-garde {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            text-align: center;
+        }
+        .contenu-garde h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .btn-entrer {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .btn-entrer:hover {
+            transform: scale(1.05);
+        }
+
+        /* --- APPLICATION (ORDINATEUR) --- */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* BOUTON RETOUR PAGE DE GARDE */
+        .btn-retour-garde {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+
+        /* 1. Onglets A-Z (Colonne à gauche sur ordi) */
+        .onglets-az {
+            width: 60px;
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 0 10px 0;
+            overflow-y: auto;
+        }
+        .onglets-az button {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #7f8c8d;
+            margin: 5px 0;
+            cursor: pointer;
+            width: 100%;
+            padding: 5px 0;
+        }
+
+        /* 2. Liste des Contacts (Milieu sur ordi) */
+        .liste-contacts {
+            width: 300px;
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            padding: 60px 15px 15px 15px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        .liste-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .btn-ajouter-contact {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .ligne-contact {
+            padding: 12px;
+            background-color: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .ligne-contact:hover {
+            background-color: #e8f4fd;
+            color: #3498db;
+        }
+
+        /* 3. Fiche Détail (Droite sur ordi) */
+        .fiche-contact {
+            flex: 1;
+            background-color: #f5f6fa;
+            padding: 60px 30px 30px 30px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        .fiche-vide {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 50px;
+        }
+        .fiche-active {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .fiche-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .contact-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            background-color: #eee;
+        }
+        .fiche-details p {
+            font-size: 1.1rem;
+            margin: 12px 0;
+        }
+        .fiche-actions {
+            margin-top: 25px;
+        }
+        .btn-action {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .btn-modifier { background-color: #f1c40f; color: white; }
+        .btn-supprimer { background-color: #e74c3c; color: white; }
+
+        /* MODALE POP-UP FORMULAIRE */
+        .modal-formulaire {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 200;
+        }
+        .contenu-formulaire {
+            background: white; padding: 25px; border-radius: 8px;
+            width: 90%; max-width: 400px; box-sizing: border-box;
+        }
+        .contenu-formulaire label { display: block; margin-top: 10px; font-weight: bold; }
+        .contenu-formulaire input[type="text"], .contenu-formulaire input[type="file"] {
+            width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
+            border: 1px solid #ddd; border-radius: 4px;
+        }
+        .form-boutons { margin-top: 20px; text-align: right; }
+        .btn-annuler { background: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        .btn-valider { background: #2ecc71; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+
+        /* --- MODE SMARTPHONE (IPHONE) --- */
         @media (max-width: 768px) {
-            /* On s'assure que le conteneur principal laisse voir l'alphabet */
             .app-container {
                 display: flex !important;
                 flex-direction: column !important;
-                position: relative;
                 height: 100vh;
             }
-            
-            /* L'alphabet reste bien en place en haut */
             .onglets-az {
-                display: flex !important;
-                flex-wrap: nowrap !important;
+                width: 100% !important;
+                flex-direction: row !important;
                 overflow-x: auto !important;
-                padding: 10px !important;
-                background: #f8f9fa;
-                z-index: 2;
+                padding: 60px 10px 10px 10px !important;
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                box-sizing: border-box;
             }
-
-            /* La liste des contacts doit occuper l'espace sous l'alphabet */
+            .onglets-az button {
+                width: auto !important;
+                padding: 5px 12px !important;
+                margin: 0 2px !important;
+            }
             .liste-contacts {
-                display: block !important;
+                width: 100% !important;
                 flex: 1;
-                padding-top: 20px !important;
+                padding: 15px !important;
+                border-right: none;
             }
-
-            /* La fiche contact vient se superposer UNIQUEMENT quand elle est activée */
             .fiche-contact {
                 display: none;
                 position: fixed;
-                top: 0;
-                left: 0;
+                top: 0; left: 0;
                 width: 100% !important;
                 height: 100vh;
+                z-index: 99;
                 background-color: white;
-                z-index: 99; /* Passe au-dessus de tout */
                 padding: 20px !important;
-                box-sizing: border-box;
             }
-
-            /* Quand on clique sur un contact, la fiche passe au-dessus */
             .fiche-contact.mobile-active {
                 display: block !important;
             }
-
-            /* Style pour le bouton retour de la fiche */
             .btn-retour-liste {
-                display: inline-block;
+                display: inline-block !important;
                 background-color: #7f8c8d;
                 color: white;
                 border: none;
@@ -63,15 +255,11 @@
                 font-weight: bold;
                 margin-bottom: 20px;
                 cursor: pointer;
-                font-size: 1rem;
             }
         }
 
-        /* Masquer le bouton retour liste sur ordinateur */
         @media (min-width: 769px) {
-            .btn-retour-liste {
-                display: none !important;
-            }
+            .btn-retour-liste { display: none !important; }
         }
     </style>
 </head>
@@ -105,7 +293,6 @@
 
         <!-- 3. Fiche Détail -->
         <section class="fiche-contact" id="ficheContact">
-            <!-- Bouton Retour Liste visible uniquement sur Mobile -->
             <button onclick="retourALaListe()" class="btn-retour-liste">⬅️ Retour à la liste</button>
             <h2>Détails du Contact</h2>
             <div id="zoneFiche" class="fiche-vide">
@@ -114,26 +301,21 @@
         </section>
     </div>
 
-    <!-- POP-UP FORMULAIRE (Ajout/Modification) -->
+    <!-- POP-UP FORMULAIRE -->
     <div id="zoneFormulaire" class="modal-formulaire cacher">
         <div class="contenu-formulaire">
             <h3 id="formTitre">Nouveau Contact</h3>
             <form id="formContact" onsubmit="soumettreFormulaire(event)">
                 <label>Nom et Prénom :</label>
                 <input type="text" id="inputNom" required placeholder="Ex: Dupont Jean">
-
                 <label>Téléphone Fixe :</label>
                 <input type="text" id="inputFixe" placeholder="Ex: 01 02 03 04 05">
-
                 <label>Téléphone Mobile :</label>
                 <input type="text" id="inputMobile" placeholder="Ex: 06 07 08 09 10">
-
                 <label>Adresse postale :</label>
                 <input type="text" id="inputAdresse" placeholder="Ex: 12 rue de la paix">
-
-                <label>Photo (depuis l'album) :</label>
+                <label>Photo :</label>
                 <input type="file" id="inputPhoto" accept="image/*">
-
                 <div class="form-boutons">
                     <button type="button" class="btn-annuler" onclick="fermerFormulaire()">Annuler</button>
                     <button type="submit" class="btn-valider">Enregistrer</button>
@@ -147,9 +329,7 @@
     let contacts = null;
     try {
         contacts = JSON.parse(localStorage.getItem("mes_contacts"));
-    } catch (e) {
-        console.log("Stockage restreint.");
-    }
+    } catch (e) {}
 
     if (!contacts || contacts.length === 0) {
         contacts = [
@@ -172,11 +352,9 @@
     function ouvrirRepertoire() {
         document.getElementById("pageGarde").classList.add("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.remove("cacher");
-        
         lettreActive = ""; 
         genererAlphabet();
         retourALaListe();
-        
         const zoneListe = document.getElementById("zoneListe");
         if (zoneListe) {
             zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Choisissez une lettre pour afficher les contacts.</p>`;
@@ -187,7 +365,6 @@
         document.getElementById("pageGarde").classList.remove("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.add("cacher");
         retourALaListe();
-        
         const zoneFiche = document.getElementById("zoneFiche");
         if (zoneFiche) {
             zoneFiche.className = "fiche-vide";
@@ -223,14 +400,13 @@
             zoneFiche.className = "fiche-vide";
             zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
         }
-
         const zoneListe = document.getElementById("zoneListe");
         if (!zoneListe) return;
         zoneListe.innerHTML = "";
         
         const contactsFiltres = contacts.filter(c => c.nom && c.nom.toUpperCase().startsWith(lettre));
         if (contactsFiltres.length === 0) {
-            zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px;">Aucun contact en ${lettre}</p>`;
+            zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Aucun contact en ${lettre}</p>`;
             return;
         }
         
@@ -247,7 +423,6 @@
     function afficherFiche(contact) {
         const zoneFiche = document.getElementById("zoneFiche");
         if (!zoneFiche) return;
-        
         const photoAffichage = contact.photo ? contact.photo : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         
         zoneFiche.className = "fiche-active";
@@ -266,7 +441,6 @@
                 <button class="btn-action btn-supprimer" onclick="supprimerContact(${contact.id})">🗑️ Supprimer</button>
             </div>
         `;
-
         document.getElementById("ficheContact").classList.add("mobile-active");
     }
 
