@@ -98,11 +98,19 @@
         } catch (e) {}
     }
 
-    function ouvrirRepertoire() {
+        function ouvrirRepertoire() {
         document.getElementById("pageGarde").classList.add("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.remove("cacher");
+        
+        // On remet la lettre à vide au démarrage pour ne rien afficher
+        lettreActive = ""; 
         genererAlphabet();
-        filtrerContacts(lettreActive);
+        
+        // On vide la colonne de gauche tant qu'aucun onglet n'est cliqué
+        const zoneListe = document.getElementById("zoneListe");
+        if (zoneListe) {
+            zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Choisissez une lettre pour afficher les contacts.</p>`;
+        }
     }
 
     function fermerRepertoire() {
@@ -123,7 +131,7 @@
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(lettre => {
             const bouton = document.createElement("button");
             bouton.textContent = lettre;
-            if (lettre === lettreActive) bouton.style.color = "#3498db";
+            if (lettreActive && lettre === lettreActive) bouton.style.color = "#3498db";
             bouton.onclick = () => {
                 lettreActive = lettre;
                 genererAlphabet();
