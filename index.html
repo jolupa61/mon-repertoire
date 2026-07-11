@@ -20,82 +20,83 @@
             display: none !important;
         }
 
-        /* --- PAGE DE GARDE STYLE CARNET À SPIRALE --- */
+        /* --- PAGE DE GARDE STYLE CARNET PLEIN ÉCRAN --- */
         .page-garde {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #d1d8e0; /* Fond de la pièce neutre derrière le carnet */
+            width: 100vw;
+            background: #2c3e50; /* Le carnet prend TOUT l'écran désormais (Bleu Nuit / Anthracite) */
             text-align: center;
-        }
-
-        /* Le carnet physique */
-        .contenu-garde {
-            background: #2c3e50; /* Couleur de la couverture foncée (Bleu Nuit / Anthracite) */
-            padding: 50px 30px 50px 60px; /* Plus d'espace à gauche pour la spirale */
-            border-radius: 4px 16px 16px 4px; /* Bords légèrement plus arrondis à droite qu'à gauche */
-            box-shadow: 10px 10px 25px rgba(0,0,0,0.3), inset -5px 0 15px rgba(0,0,0,0.2);
             position: relative;
-            width: 85%;
-            max-width: 340px;
             box-sizing: border-box;
-            border-left: 5px solid #1a252f;
+            overflow: hidden;
         }
 
-        /* La reliure à spirale */
-        .contenu-garde::before {
+        /* La reliure à spirale collée sur le bord gauche de l'écran */
+        .page-garde::before {
             content: '';
             position: absolute;
-            top: 15px;
-            left: 12px;
-            width: 14px;
-            height: calc(100% - 30px);
-            /* Dessine l'effet d'anneaux métalliques répétés */
+            top: 0;
+            left: 5px; /* Collée au bord gauche */
+            width: 16px;
+            height: 100%;
+            /* Chaîne d'anneaux métalliques verticale */
             background: repeating-linear-gradient(
                 to bottom,
                 #bdc3c7 0px,
-                #95a5a6 4px,
-                #7f8c8d 8px,
-                transparent 8px,
-                transparent 24px
+                #95a5a6 6px,
+                #7f8c8d 12px,
+                transparent 12px,
+                transparent 32px
             );
-            border-radius: 4px;
-            box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
+            box-shadow: 4px 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        /* Zone de texte au centre de la couverture */
+        .contenu-garde {
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            box-sizing: border-box;
+            z-index: 2;
         }
 
         /* Titre sur la couverture */
         .contenu-garde h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: 3rem; /* Écrit plus gros pour le plein écran */
+            margin-bottom: 15px;
             font-family: "Georgia", serif;
-            color: #f5f6fa; /* Écrit en blanc cassé lumineux sur fond foncé */
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            color: #f5f6fa;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
             letter-spacing: 1px;
         }
 
         .contenu-garde p {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-style: italic;
             color: #bdc3c7;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
         }
 
-        /* Bouton d'ouverture incrusté sur la couverture */
+        /* Bouton d'ouverture style étiquette / encart cuir */
         .btn-entrer {
-            background-color: #d35400; /* Couleur cuir / orange foncé pour trancher avec la couverture */
+            background-color: #d35400; /* Orange brique chaleureux */
             color: white;
             border: none;
-            padding: 14px 25px;
-            font-size: 1.1rem;
-            border-radius: 6px;
+            padding: 18px 30px;
+            font-size: 1.3rem;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
             transition: all 0.2s;
             width: 100%;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
         .btn-entrer:hover {
             transform: scale(1.02);
@@ -368,7 +369,7 @@
 </head>
 <body>
 
-    <!-- PAGE DE GARDE STYLE CARNET À SPIRALE -->
+    <!-- PAGE DE GARDE STYLE CARNET PLEIN ÉCRAN -->
     <div id="pageGarde" class="page-garde">
         <div class="contenu-garde">
             <h1>Répertoire</h1>
