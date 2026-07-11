@@ -27,22 +27,20 @@
             align-items: center;
             height: 100vh;
             width: 100vw;
-            background: #2c3e50; /* Le carnet prend TOUT l'écran désormais (Bleu Nuit / Anthracite) */
+            background: #2c3e50;
             text-align: center;
             position: relative;
             box-sizing: border-box;
             overflow: hidden;
         }
 
-        /* La reliure à spirale collée sur le bord gauche de l'écran */
         .page-garde::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 5px; /* Collée au bord gauche */
+            left: 5px;
             width: 16px;
             height: 100%;
-            /* Chaîne d'anneaux métalliques verticale */
             background: repeating-linear-gradient(
                 to bottom,
                 #bdc3c7 0px,
@@ -55,7 +53,6 @@
             z-index: 10;
         }
 
-        /* Zone de texte au centre de la couverture */
         .contenu-garde {
             padding: 20px;
             width: 80%;
@@ -64,9 +61,8 @@
             z-index: 2;
         }
 
-        /* Titre sur la couverture */
         .contenu-garde h1 {
-            font-size: 3rem; /* Écrit plus gros pour le plein écran */
+            font-size: 3rem;
             margin-bottom: 15px;
             font-family: "Georgia", serif;
             color: #f5f6fa;
@@ -82,9 +78,8 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
         }
 
-        /* Bouton d'ouverture style étiquette / encart cuir */
         .btn-entrer {
-            background-color: #d35400; /* Orange brique chaleureux */
+            background-color: #d35400;
             color: white;
             border: none;
             padding: 18px 30px;
@@ -111,7 +106,6 @@
             box-sizing: border-box;
         }
 
-        /* BOUTON RETOUR PAGE DE GARDE */
         .btn-retour-garde {
             position: absolute;
             top: 15px;
@@ -127,7 +121,6 @@
             z-index: 10;
         }
 
-        /* 1. Onglets A-Z (Colonne à gauche sur ordi) */
         .onglets-az {
             width: 60px;
             background-color: #ffffff;
@@ -150,7 +143,6 @@
             padding: 5px 0;
         }
 
-        /* 2. Liste des Contacts (Milieu sur ordi) */
         .liste-contacts {
             width: 300px;
             background-color: #ffffff;
@@ -169,10 +161,11 @@
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 10px 16px; /* Plus grand bouton ajouter */
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 1.1rem;
         }
         .ligne-contact {
             padding: 18px 15px;
@@ -267,26 +260,86 @@
         .btn-modifier { background-color: #f1c40f; color: white; }
         .btn-supprimer { background-color: #e74c3c; color: white; }
 
-        /* MODALE POP-UP FORMULAIRE */
+        /* --- MODALE POP-UP FORMULAIRE AGRANDIE --- */
         .modal-formulaire {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #ffffff; /* Fond blanc complet sur mobile */
+            display: flex; justify-content: center; align-items: flex-start;
             z-index: 200;
+            overflow-y: auto;
         }
         .contenu-formulaire {
-            background: white; padding: 25px; border-radius: 8px;
-            width: 90%; max-width: 400px; box-sizing: border-box;
+            background: white; 
+            padding: 30px 20px; 
+            width: 100%; 
+            max-width: 500px; 
+            box-sizing: border-box;
         }
-        .contenu-formulaire label { display: block; margin-top: 10px; font-weight: bold; }
-        .contenu-formulaire input[type="text"], .contenu-formulaire input[type="file"] {
-            width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;
-            border: 1px solid #ddd; border-radius: 4px;
+        .contenu-formulaire h3 {
+            font-size: 2rem; /* Très gros titre */
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
         }
-        .form-boutons { margin-top: 20px; text-align: right; }
-        .btn-annuler { background: #95a5a6; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin-right: 10px; }
-        .btn-valider { background: #2ecc71; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        .contenu-formulaire label { 
+            display: block; 
+            margin-top: 20px; 
+            font-weight: bold; 
+            font-size: 1.3rem; /* Libellés plus grands */
+            color: #34495e;
+        }
+        .contenu-formulaire input[type="text"] {
+            width: 100%; 
+            padding: 16px; /* Grosses zones de saisie faciles à cibler */
+            margin-top: 8px; 
+            box-sizing: border-box;
+            border: 2px solid #bdc3c7; 
+            border-radius: 8px;
+            font-size: 1.4rem; /* Gros texte à l'intérieur */
+            background-color: #f8f9fa;
+        }
+        .contenu-formulaire input[type="text"]:focus {
+            border-color: #3498db;
+            background-color: #fff;
+            outline: none;
+        }
+        .contenu-formulaire input[type="file"] {
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+        .form-boutons { 
+            margin-top: 40px; 
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-annuler { 
+            background: #95a5a6; 
+            color: white; 
+            border: none; 
+            padding: 16px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex: 1;
+            margin-right: 15px;
+            text-align: center;
+        }
+        .btn-valider { 
+            background: #2ecc71; 
+            color: white; 
+            border: none; 
+            padding: 16px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex: 1;
+            text-align: center;
+        }
 
         /* --- MODE SMARTPHONE (IPHONE) --- */
         @media (max-width: 768px) {
@@ -360,10 +413,29 @@
                 cursor: pointer;
                 font-size: 1.1rem;
             }
+            
+            /* Formulaire prend tout l'écran sur mobile */
+            .modal-formulaire {
+                align-items: flex-start;
+                background: #ffffff;
+            }
+            .contenu-formulaire {
+                max-width: 100%;
+                height: 100%;
+                padding: 70px 20px 40px 20px; /* Espace en haut pour pas toucher l'encoche de l'iPhone */
+            }
         }
 
         @media (min-width: 769px) {
             .btn-retour-liste { display: none !important; }
+            .modal-formulaire {
+                background: rgba(0,0,0,0.6); /* Fond semi-transparent uniquement sur ordinateur */
+                align-items: center;
+            }
+            .contenu-formulaire {
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
         }
     </style>
 </head>
@@ -390,7 +462,7 @@
         <section class="liste-contacts">
             <div class="liste-header">
                 <h2>Contacts</h2>
-                <button class="btn-ajouter-contact" onclick="abrirFormulaireAjouter()">➕ Ajouter</button>
+                <button class="btn-ajouter-contact" onclick="ouvrirFormulaireAjouter()">➕ Ajouter</button>
             </div>
             <div id="zoneListe"></div>
         </section>
@@ -405,7 +477,7 @@
         </section>
     </div>
 
-    <!-- POP-UP FORMULAIRE -->
+    <!-- POP-UP FORMULAIRE AGRANDI -->
     <div id="zoneFormulaire" class="modal-formulaire cacher">
         <div class="contenu-formulaire">
             <h3 id="formTitre">Nouveau Contact</h3>
@@ -430,8 +502,7 @@
 
     <!-- SCRIPT APPLICATION -->
     <script>
-    // --- CONFIGURATION DU MOT DE PASSE ---
-    const MOT_DE_PASSE_SECRET = "1953"; 
+    const MOT_DE_PASSE_SECRET = "1234"; 
 
     let contacts = null;
     try {
@@ -571,7 +642,7 @@
         document.getElementById("ficheContact").classList.add("mobile-active");
     }
 
-    function abrirFormulaireAjouter() {
+    function ouvrirFormulaireAjouter() {
         contactEnCoursDeModification = null;
         document.getElementById("formTitre").textContent = "Nouveau Contact";
         document.getElementById("formContact").reset();
