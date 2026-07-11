@@ -187,7 +187,6 @@
             display: inline-block;
             min-width: 140px;
         }
-        /* Style pour les liens de numéros de téléphone */
         .lien-tel {
             color: #3498db;
             text-decoration: none;
@@ -320,7 +319,7 @@
         <div class="contenu-garde">
             <h1>Mon Répertoire</h1>
             <p>Votre carnet d'adresses de A à Z</p>
-            <button onclick="ouvrirRepertoire()" class="btn-entrer">Ouvrir le répertoire</button>
+            <button onclick="verifierMotDePasse()" class="btn-entrer">Ouvrir le répertoire</button>
         </div>
     </div>
 
@@ -376,6 +375,10 @@
 
     <!-- SCRIPT APPLICATION -->
     <script>
+    // --- CONFIGURATION DU MOT DE PASSE ---
+    // Tu peux changer "1234" par le mot de passe de ton choix entre les guillemets
+    const MOT_DE_PASSE_SECRET = "1234"; 
+
     let contacts = null;
     try {
         contacts = JSON.parse(localStorage.getItem("mes_contacts"));
@@ -397,6 +400,16 @@
         try {
             localStorage.setItem("mes_contacts", JSON.stringify(contacts));
         } catch (e) {}
+    }
+
+    function verifierMotDePasse() {
+        const saisie = prompt("Veuillez saisir le mot de passe pour accéder au répertoire :");
+        
+        if (saisie === MOT_DE_PASSE_SECRET) {
+            ouvrirRepertoire();
+        } else if (saisie !== null) {
+            alert("Mot de passe incorrect ! Access refusé.");
+        }
     }
 
     function ouvrirRepertoire() {
@@ -479,11 +492,9 @@
         if (!zoneFiche) return;
         const photoAffichage = contact.photo ? contact.photo : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         
-        // Nettoyage des numéros pour les liens cliquables (supprime les espaces)
         const lienFixe = nettoiementTel(contact.fixe);
         const lienMobile = nettoiementTel(contact.mobile);
 
-        // Préparation de l'affichage HTML avec les liens cliquables
         const affichageFixe = contact.fixe ? `<a href="tel:${lienFixe}" class="lien-tel">${contact.fixe}</a>` : 'Non renseigné';
         const affichageMobile = contact.mobile ? `<a href="tel:${lienMobile}" class="lien-tel">${contact.mobile}</a>` : 'Non renseigné';
 
