@@ -7,6 +7,15 @@
     <link class="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <style>
+        /* --- VARIABLES DE STYLE PAR DÉFAUT --- */
+        :root {
+            --bg-garde: #2c3e50;
+            --btn-ouvrir: #d35400;
+            --police-garde: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --theme-app: #2c3e50;
+            --theme-accent: #3498db;
+        }
+
         /* --- DESIGN GÉNÉRAL ET POLICES --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -27,11 +36,12 @@
             align-items: center;
             height: 100vh;
             width: 100vw;
-            background: #2c3e50;
+            background: var(--bg-garde);
             text-align: center;
             position: relative;
             box-sizing: border-box;
             overflow: hidden;
+            font-family: var(--police-garde);
         }
 
         .page-garde::before {
@@ -67,9 +77,8 @@
         .contenu-garde h1 {
             font-size: 3rem;
             margin-bottom: 15px;
-            font-family: "Georgia", serif;
             color: #f5f6fa;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
             letter-spacing: 1px;
         }
 
@@ -78,11 +87,11 @@
             font-style: italic;
             color: #bdc3c7;
             margin-bottom: 50px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .btn-entrer {
-            background-color: #d35400;
+            background-color: var(--btn-ouvrir);
             color: white;
             border: none;
             padding: 18px 35px;
@@ -90,7 +99,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
             transition: all 0.2s;
             width: auto;
             display: inline-block;
@@ -100,7 +109,7 @@
         }
         .btn-entrer:hover {
             transform: scale(1.02);
-            background-color: #e67e22;
+            opacity: 0.9;
         }
 
         /* --- APPLICATION (ORDINATEUR) --- */
@@ -111,49 +120,28 @@
             box-sizing: border-box;
         }
 
-        /* --- BARRE DE MENU TOUT EN HAUT À DROITE --- */
+        /* --- BARRE HAUTE ÉPURÉE AVEC SEULEMENT RÉGLAGES --- */
         .barre-outils-haut {
             position: absolute;
             top: 15px;
             right: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             z-index: 100;
         }
 
-        .btn-retour-garde {
-            background-color: #e74c3c;
+        .btn-reglages-declencheur {
+            background-color: var(--theme-app);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 16px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .zone-synchro {
+            font-size: 1rem;
             display: flex;
+            align-items: center;
             gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .btn-synchro {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            color: white;
-            text-align: center;
-        }
-        .btn-export { background-color: #27ae60; }
-        .btn-import { background-color: #8e44ad; }
-        .btn-mdp { background-color: #f39c12; }
-
-        /* Textes alternatifs pour version Mobile */
-        .texte-pc { display: inline; }
-        .texte-mobile { display: none; }
 
         .onglets-az {
             width: 60px;
@@ -194,7 +182,7 @@
             margin-bottom: 20px;
         }
         .btn-ajouter-contact {
-            background-color: #3498db;
+            background-color: var(--theme-accent);
             color: white;
             border: none;
             padding: 10px 16px;
@@ -217,11 +205,11 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 1.4rem;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid var(--theme-accent);
         }
         .ligne-contact:hover {
             background-color: #e8f4fd;
-            color: #3498db;
+            color: var(--theme-accent);
         }
 
         /* 3. Fiche Détail (PC) */
@@ -278,7 +266,7 @@
             min-width: 140px;
         }
         .lien-tel, .lien-mail {
-            color: #3498db;
+            color: var(--theme-accent);
             text-decoration: none;
             font-weight: 500;
         }
@@ -302,6 +290,98 @@
         .btn-modifier { background-color: #f1c40f; color: white; }
         .btn-supprimer { background-color: #e74c3c; color: white; }
 
+        /* --- ÉCRAN DE RÉGLAGES --- */
+        .modal-reglages {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #ffffff;
+            z-index: 300;
+            overflow-y: auto;
+            padding: 30px 20px;
+            box-sizing: border-box;
+        }
+        .contenu-reglages {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .contenu-reglages h2 {
+            font-size: 2rem;
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid var(--theme-accent);
+            padding-bottom: 10px;
+        }
+        .section-reglage {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .section-reglage h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #34495e;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+        }
+        .option-ligne {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .option-ligne input[type="color"] {
+            border: none;
+            width: 45px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            background: none;
+        }
+        .option-ligne select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #bdc3c7;
+            font-size: 1rem;
+            width: 150px;
+        }
+        .grille-boutons-reglages {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .btn-reglage-action {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+        }
+        .btn-reglage-fermer-app { background-color: #e74c3c; grid-column: span 2; }
+        .btn-reglage-export { background-color: #27ae60; }
+        .btn-reglage-import { background-color: #8e44ad; }
+        .btn-reglage-mdp { background-color: #f39c12; }
+        
+        .btn-reglages-valider {
+            width: 100%;
+            background-color: var(--theme-app);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
         /* --- MODALE POP-UP FORMULAIRE --- */
         .modal-formulaire {
             position: fixed;
@@ -323,7 +403,7 @@
             margin-top: 0;
             margin-bottom: 25px;
             color: #2c3e50;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 2px solid var(--theme-accent);
             padding-bottom: 10px;
         }
         .contenu-formulaire label { 
@@ -344,7 +424,7 @@
             background-color: #f8f9fa;
         }
         .contenu-formulaire input[type="text"]:focus, .contenu-formulaire input[type="email"]:focus {
-            border-color: #3498db;
+            border-color: var(--theme-accent);
             background-color: #fff;
             outline: none;
         }
@@ -390,39 +470,21 @@
                 flex-direction: column !important;
                 height: 100vh;
             }
+            /* La barre d'outils ne contient que le bouton Réglages bien propre */
             .barre-outils-haut {
                 position: absolute;
                 top: 0; left: 0; right: 0;
                 width: 100%;
-                background-color: #2c3e50;
+                background-color: var(--theme-app);
                 padding: 10px;
                 box-sizing: border-box;
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 5px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            }
-            .zone-synchro { display: contents; }
-            .texte-pc { display: none !important; }
-            .texte-mobile { display: inline !important; }
-
-            .btn-retour-garde {
-                grid-column: 4;
-                padding: 10px 0;
-                font-size: 0.85rem;
-                border-radius: 5px;
-                width: 100%;
-                text-transform: uppercase;
-            }
-            .btn-synchro {
-                padding: 10px 0;
-                font-size: 0.85rem;
-                border-radius: 5px;
-                width: 100%;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                text-transform: uppercase;
+                justify-content: flex-end;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            .btn-reglages-declencheur {
+                font-size: 0.9rem;
+                padding: 8px 14px;
             }
             .onglets-az {
                 width: 100% !important;
@@ -445,14 +507,13 @@
                 border-right: none;
             }
 
-            /* --- FICHE CONTACT MOBILE : TOUT L'ÉCRAN --- */
             .fiche-contact {
                 display: none;
                 position: fixed;
                 top: 0; left: 0;
                 width: 100% !important;
                 height: 100vh !important;
-                z-index: 150; /* Passe au-dessus du menu */
+                z-index: 150;
                 background-color: #ffffff;
                 padding: 25px 20px !important;
                 box-sizing: border-box;
@@ -468,14 +529,14 @@
                 background: transparent;
             }
             .fiche-header {
-                flex-direction: column !important; /* Photo au-dessus du nom */
+                flex-direction: column !important;
                 text-align: center;
                 border-bottom: 2px solid #f5f6fa;
                 padding-bottom: 20px;
                 margin-bottom: 25px;
             }
             .contact-photo {
-                width: 130px !important; /* Plus grande et centrée */
+                width: 130px !important;
                 height: 130px !important;
                 margin-right: 0 !important;
                 margin-bottom: 15px;
@@ -484,7 +545,7 @@
                 font-size: 2rem !important;
             }
             .fiche-details p {
-                font-size: 1.4rem !important; /* Écritures agrandies pour iPhone */
+                font-size: 1.4rem !important;
                 margin: 25px 0 !important;
                 background: #f8f9fa;
                 padding: 15px;
@@ -499,7 +560,7 @@
             }
             .btn-retour-liste {
                 display: block !important;
-                background-color: #2c3e50;
+                background-color: var(--theme-app);
                 color: white;
                 border: none;
                 padding: 14px 20px;
@@ -526,26 +587,31 @@
                 border-radius: 8px;
             }
             
-            .modal-formulaire {
+            .modal-formulaire, .modal-reglages {
                 align-items: flex-start;
                 background: #ffffff;
             }
-            .contenu-formulaire {
+            .contenu-formulaire, .contenu-reglages {
                 max-width: 100%;
                 height: 100%;
-                padding: 80px 20px 40px 20px;
+                padding-top: 60px;
             }
         }
 
         @media (min-width: 769px) {
             .btn-retour-liste { display: none !important; }
-            .modal-formulaire {
+            .modal-formulaire, .modal-reglages {
                 background: rgba(0,0,0,0.6);
                 align-items: center;
+                display: flex;
+                justify-content: center;
             }
-            .contenu-formulaire {
+            .contenu-formulaire, .contenu-reglages {
                 border-radius: 12px;
                 box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                background: white;
+                padding: 30px;
+                width: 100%;
             }
         }
     </style>
@@ -564,27 +630,9 @@
     <!-- APPLICATION -->
     <div class="app-container cacher">
         
-        <!-- BARRE D'OUTILS ET DE FERMETURE EN HAUT À DROITE -->
+        <!-- BARRE HAUTE ÉPURÉE (RÉGLAGES SEULEMENT) -->
         <div class="barre-outils-haut">
-            <div class="zone-synchro">
-                <button class="btn-synchro btn-export" onclick="exporterContacts()">
-                    <span class="texte-pc">📥 Exporter</span>
-                    <span class="texte-mobile">EXP</span>
-                </button>
-                <button class="btn-synchro btn-import" onclick="declencherImport()">
-                    <span class="texte-pc">📤 Importer</span>
-                    <span class="texte-mobile">IMP</span>
-                </button>
-                <button class="btn-synchro btn-mdp" onclick="changerMotDePasse()">
-                    <span class="texte-pc">🔑 MDP</span>
-                    <span class="texte-mobile">MDP</span>
-                </button>
-                <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
-            </div>
-            <button onclick="fermerRepertoire()" class="btn-retour-garde">
-                <span class="texte-pc">🚪 Fermer</span>
-                <span class="texte-mobile">FERMER</span>
-            </button>
+            <button class="btn-reglages-declencheur" onclick="ouvrirReglages()">⚙️ Réglages</button>
         </div>
 
         <!-- 1. Onglets A-Z -->
@@ -609,7 +657,62 @@
         </section>
     </div>
 
-    <!-- POP-UP FORMULAIRE AGRANDI -->
+    <!-- POP-UP MENU RÉGLAGES COMPLET -->
+    <div id="zoneReglages" class="modal-reglages cacher">
+        <div class="contenu-reglages">
+            <h2>⚙️ Réglages & Thèmes</h2>
+            
+            <!-- Personnalisation Page de garde -->
+            <div class="section-reglage">
+                <h4>Carnet / Page de garde</h4>
+                <div class="option-ligne">
+                    <span>Couleur de fond :</span>
+                    <input type="color" id="cfgBgGarde" onchange="appliquerStylesTemporaires()">
+                </div>
+                <div class="option-ligne">
+                    <span>Bouton Ouvrir :</span>
+                    <input type="color" id="cfgBtnOuvrir" onchange="appliquerStylesTemporaires()">
+                </div>
+                <div class="option-ligne">
+                    <span>Style d'écriture :</span>
+                    <select id="cfgPoliceGarde" onchange="appliquerStylesTemporaires()">
+                        <option value="-apple-system, sans-serif">Moderne (Sans-Serif)</option>
+                        <option value="Georgia, serif">Classique (Georgia)</option>
+                        <option value="'Courier New', monospace">Machine (Monospace)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Personnalisation Application -->
+            <div class="section-reglage">
+                <h4>Application & Fiches</h4>
+                <div class="option-ligne">
+                    <span>Couleur principale (Barres) :</span>
+                    <input type="color" id="cfgThemeApp" onchange="appliquerStylesTemporaires()">
+                </div>
+                <div class="option-ligne">
+                    <span>Couleur d'accent (Boutons) :</span>
+                    <input type="color" id="cfgThemeAccent" onchange="appliquerStylesTemporaires()">
+                </div>
+            </div>
+
+            <!-- Boutons Actions Cachés -->
+            <div class="section-reglage">
+                <h4>Outils du Répertoire</h4>
+                <div class="grille-boutons-reglages">
+                    <button class="btn-reglage-action btn-reglage-export" onclick="exporterContacts()">📥 Exporter</button>
+                    <button class="btn-reglage-action btn-reglage-import" onclick="declencherImport()">📤 Importer</button>
+                    <button class="btn-reglage-action btn-reglage-mdp" onclick="changerMotDePasse()">🔑 Changer MDP</button>
+                    <button class="btn-reglage-action btn-reglage-fermer-app" onclick="fermerRepertoireDepuisReglages()">🚪 Fermer le Répertoire</button>
+                    <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
+                </div>
+            </div>
+
+            <button class="btn-reglages-valider" onclick="fermerReglages()">Enregistrer & Fermer</button>
+        </div>
+    </div>
+
+    <!-- POP-UP FORMULAIRE CONTACT -->
     <div id="zoneFormulaire" class="modal-formulaire cacher">
         <div class="contenu-formulaire">
             <h3 id="formTitre">Nouveau Contact</h3>
@@ -636,16 +739,11 @@
 
     <!-- SCRIPT APPLICATION -->
     <script>
-    let mdpSecret = localStorage.getItem("repertoire_mdp");
-    if (!mdpSecret) {
-        mdpSecret = "1234";
-        localStorage.setItem("repertoire_mdp", mdpSecret);
-    }
+    let mdpSecret = localStorage.getItem("repertoire_mdp") || "1234";
+    localStorage.setItem("repertoire_mdp", mdpSecret);
 
     let contacts = null;
-    try {
-        contacts = JSON.parse(localStorage.getItem("mes_contacts"));
-    } catch (e) {}
+    try { contacts = JSON.parse(localStorage.getItem("mes_contacts")); } catch (e) {}
 
     if (!contacts || contacts.length === 0) {
         contacts = [
@@ -659,43 +757,56 @@
     let lettreActive = "";
     let contactEnCoursDeModification = null;
 
-    function sauvegarder() {
-        try {
-            localStorage.setItem("mes_contacts", JSON.stringify(contacts));
-        } catch (e) {}
+    // --- CHARGEMENT DU THÈME CONFIGURÉ ---
+    function chargerTheme() {
+        const racine = document.documentElement;
+        racine.style.setProperty('--bg-garde', localStorage.getItem('theme_bg-garde') || '#2c3e50');
+        racine.style.setProperty('--btn-ouvrir', localStorage.getItem('theme_btn-ouvrir') || '#d35400');
+        racine.style.setProperty('--police-garde', localStorage.getItem('theme_police-garde') || '-apple-system, sans-serif');
+        racine.style.setProperty('--theme-app', localStorage.getItem('theme_theme-app') || '#2c3e50');
+        racine.style.setProperty('--theme-accent', localStorage.getItem('theme_theme-accent') || '#3498db');
+
+        // Mettre à jour les champs de saisie des réglages
+        document.getElementById('cfgBgGarde').value = getComputedStyle(racine).getPropertyValue('--bg-garde').trim();
+        document.getElementById('cfgBtnOuvrir').value = getComputedStyle(racine).getPropertyValue('--btn-ouvrir').trim();
+        document.getElementById('cfgPoliceGarde').value = getComputedStyle(racine).getPropertyValue('--police-garde').trim();
+        document.getElementById('cfgThemeApp').value = getComputedStyle(racine).getPropertyValue('--theme-app').trim();
+        document.getElementById('cfgThemeAccent').value = getComputedStyle(racine).getPropertyValue('--theme-accent').trim();
     }
+
+    function appliquerStylesTemporaires() {
+        const racine = document.documentElement;
+        racine.style.setProperty('--bg-garde', document.getElementById('cfgBgGarde').value);
+        racine.style.setProperty('--btn-ouvrir', document.getElementById('cfgBtnOuvrir').value);
+        racine.style.setProperty('--police-garde', document.getElementById('cfgPoliceGarde').value);
+        racine.style.setProperty('--theme-app', document.getElementById('cfgThemeApp').value);
+        racine.style.setProperty('--theme-accent', document.getElementById('cfgThemeAccent').value);
+    }
+
+    function sauvegarderTheme() {
+        localStorage.setItem('theme_bg-garde', document.getElementById('cfgBgGarde').value);
+        localStorage.setItem('theme_btn-ouvrir', document.getElementById('cfgBtnOuvrir').value);
+        localStorage.setItem('theme_police-garde', document.getElementById('cfgPoliceGarde').value);
+        localStorage.setItem('theme_theme-app', document.getElementById('cfgThemeApp').value);
+        localStorage.setItem('theme_theme-accent', document.getElementById('cfgThemeAccent').value);
+    }
+
+    // Initialisation du thème au lancement
+    chargerTheme();
+
+    function sauvegarder() { try { localStorage.setItem("mes_contacts", JSON.stringify(contacts)); } catch (e) {} }
 
     function verifierMotDePasse() {
         const saisie = prompt("Veuillez saisir le mot de passe pour accéder au répertoire :");
-        
-        if (saisie === mdpSecret) {
-            ouvrirRepertoire();
-        } else if (saisie !== null) {
-            alert("Mot de passe incorrect ! Accès refusé.");
-        }
+        if (saisie === mdpSecret) ouvrirRepertoire();
+        else if (saisie !== null) alert("Mot de passe incorrect ! Accès refusé.");
     }
 
     function changerMotDePasse() {
         const ancien = prompt("Saisissez votre mot de passe actuel :");
-        if (ancien === null) return;
-        
-        if (ancien !== mdpSecret) {
-            alert("Mot de passe actuel incorrect ! Modification annulée.");
-            return;
-        }
-
+        if (ancien !== mdpSecret) { alert("Mot de passe actuel incorrect !"); return; }
         const nouveau = prompt("Saisissez votre NOUVEAU mot de passe :");
-        if (!nouveau) {
-            alert("Le mot de passe ne peut pas être vide !");
-            return;
-        }
-
-        const confirmation = prompt("Confirmez votre nouveau mot de passe :");
-        if (nouveau !== confirmation) {
-            alert("Les deux saisies ne correspondent pas ! Modification annulée.");
-            return;
-        }
-
+        if (!nouveau) return;
         mdpSecret = nouveau;
         localStorage.setItem("repertoire_mdp", mdpSecret);
         alert("🔑 Mot de passe mis à jour avec succès !");
@@ -707,26 +818,27 @@
         lettreActive = ""; 
         genererAlphabet();
         retourALaListe();
-        const zoneListe = document.getElementById("zoneListe");
-        if (zoneListe) {
-            zoneListe.innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Choisissez une lettre pour afficher les contacts.</p>`;
-        }
+        document.getElementById("zoneListe").innerHTML = `<p style="color:#7f8c8d; padding:10px; text-align:center;">Choisissez une lettre pour afficher les contacts.</p>`;
     }
 
-    function fermerRepertoire() {
+    function fermerRepertoireDepuisReglages() {
+        fermerReglages();
         document.getElementById("pageGarde").classList.remove("cacher");
         document.getElementById("ongletsAZ").parentElement.classList.add("cacher");
         retourALaListe();
-        const zoneFiche = document.getElementById("zoneFiche");
-        if (zoneFiche) {
-            zoneFiche.className = "fiche-vide";
-            zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
-        }
+        document.getElementById("zoneFiche").className = "fiche-vide";
+        document.getElementById("zoneFiche").innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
     }
 
-    function retourALaListe() {
-        document.getElementById("ficheContact").classList.remove("mobile-active");
+    function ouvrirReglages() { document.getElementById("zoneReglages").classList.remove("cacher"); }
+    function fermerReglages() { 
+        sauvegarderTheme();
+        document.getElementById("zoneReglages").classList.add("cacher"); 
+        genererAlphabet();
+        if(lettreActive) filtrerContacts(lettreActive);
     }
+
+    function retourALaListe() { document.getElementById("ficheContact").classList.remove("mobile-active"); }
 
     function genererAlphabet() {
         const zoneOnglets = document.getElementById("ongletsAZ");
@@ -735,7 +847,7 @@
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").forEach(lettre => {
             const bouton = document.createElement("button");
             bouton.textContent = lettre;
-            if (lettreActive && lettre === lettreActive) bouton.style.color = "#3498db";
+            if (lettreActive && lettre === lettreActive) bouton.style.color = "var(--theme-accent)";
             bouton.onclick = () => {
                 lettreActive = lettre;
                 genererAlphabet();
@@ -747,13 +859,9 @@
     }
 
     function filtrerContacts(lettre) {
-        const zoneFiche = document.getElementById("zoneFiche");
-        if (zoneFiche) {
-            zoneFiche.className = "fiche-vide";
-            zoneFiche.innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
-        }
+        document.getElementById("zoneFiche").className = "fiche-vide";
+        document.getElementById("zoneFiche").innerHTML = `<p>Sélectionnez un contact pour afficher ses coordonnées.</p>`;
         const zoneListe = document.getElementById("zoneListe");
-        if (!zoneListe) return;
         zoneListe.innerHTML = "";
         
         const contactsFiltres = contacts.filter(c => c.nom && c.nom.toUpperCase().startsWith(lettre));
@@ -772,13 +880,10 @@
         });
     }
 
-    function nettoiementTel(numero) {
-        return numero ? numero.replace(/[^0-9+]/g, '') : '';
-    }
+    function nettoiementTel(numero) { return numero ? numero.replace(/[^0-9+]/g, '') : ''; }
 
     function afficherFiche(contact) {
         const zoneFiche = document.getElementById("zoneFiche");
-        if (!zoneFiche) return;
         const photoAffichage = contact.photo ? contact.photo : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
         
         const lienFixe = nettoiementTel(contact.fixe);
@@ -808,10 +913,6 @@
         document.getElementById("ficheContact").classList.add("mobile-active");
     }
 
-    function abrirFormularioAdicionar() {
-        ouvrirFormulaireAjouter();
-    }
-
     function ouvrirFormulaireAjouter() {
         contactEnCoursDeModification = null;
         document.getElementById("formTitre").textContent = "Nouveau Contact";
@@ -832,9 +933,7 @@
         document.getElementById("zoneFormulaire").classList.remove("cacher");
     }
 
-    function fermerFormulaire() {
-        document.getElementById("zoneFormulaire").classList.add("cacher");
-    }
+    function fermerFormulaire() { document.getElementById("zoneFormulaire").classList.add("cacher"); }
 
     function soumettreFormulaire(event) {
         event.preventDefault();
@@ -887,12 +986,10 @@
         }
     }
 
-    /* --- FONCTIONS DE SAUVEGARDE ET SYNCHRONISATION --- */
     function exporterContacts() {
         const donneesTextuelles = JSON.stringify(contacts, null, 2);
         const blob = new Blob([donneesTextuelles], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-        
         const baliseLien = document.createElement("a");
         baliseLien.href = url;
         baliseLien.download = "sauvegarde_contacts.json";
@@ -902,9 +999,7 @@
         URL.revokeObjectURL(url);
     }
 
-    function declencherImport() {
-        document.getElementById("inputFichierImport").click();
-    }
+    function declencherImport() { document.getElementById("inputFichierImport").click(); }
 
     function importerContacts(event) {
         const fichier = event.target.files[0];
@@ -915,23 +1010,15 @@
             try {
                 const contactsImportes = JSON.parse(e.target.result);
                 if (Array.isArray(contactsImportes)) {
-                    if (confirm(`Voulez-vous écraser vos contacts actuels pour charger les ${contactsImportes.length} contacts importés ?`)) {
+                    if (confirm(`Charger les ${contactsImportes.length} contacts ?`)) {
                         contacts = contactsImportes;
                         sauvegarder();
                         lettreActive = "";
                         genererAlphabet();
-                        const zoneListe = document.getElementById("zoneListe");
-                        if (zoneListe) {
-                            zoneListe.innerHTML = `<p style="color:#2ecc71; padding:10px; text-align:center; font-weight:bold;">✅ Synchronisation réussie ! Choisissez une lettre.</p>`;
-                        }
-                        retourALaListe();
+                        fermerReglages();
                     }
-                } else {
-                    alert("Erreur : Le format du fichier de sauvegarde est invalide.");
                 }
-            } catch (erreur) {
-                alert("Impossible de lire le fichier de sauvegarde.");
-            }
+            } catch (erreur) { alert("Erreur de fichier."); }
         };
         lecteur.readAsText(fichier);
         event.target.value = ""; 
