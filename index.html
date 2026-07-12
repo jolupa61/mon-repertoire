@@ -155,6 +155,8 @@
             padding: 60px 15px 15px 15px;
             overflow-y: auto;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
         .liste-header {
             display: flex;
@@ -172,6 +174,12 @@
             font-weight: bold;
             font-size: 1.1rem;
         }
+        
+        #zoneListe {
+            flex: 1;
+            overflow-y: auto;
+        }
+
         .ligne-contact {
             padding: 18px 15px;
             background-color: #f8f9fa;
@@ -186,6 +194,29 @@
             background-color: #e8f4fd;
             color: #3498db;
         }
+
+        /* --- ZONE SYNCHRO / SAUVEGARDE EN BAS --- */
+        .zone-synchro {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .btn-synchro {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+        }
+        .btn-export { background-color: #27ae60; }
+        .btn-import { background-color: #8e44ad; }
 
         /* 3. Fiche Détail */
         .fiche-contact {
@@ -469,6 +500,13 @@
                 <button class="btn-ajouter-contact" onclick="ouvrirFormulaireAjouter()">➕ Ajouter</button>
             </div>
             <div id="zoneListe"></div>
+            
+            <!-- BOUTONS DE SAUVEGARDE ET SYNCHRONISATION -->
+            <div class="zone-synchro">
+                <button class="btn-synchro btn-export" onclick="exporterContacts()">📥 Exporter</button>
+                <button class="btn-synchro btn-import" onclick="declencherImport()">📤 Importer</button>
+                <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
+            </div>
         </section>
 
         <!-- 3. Fiche Détail -->
@@ -492,11 +530,8 @@
                 <input type="text" id="inputFixe" placeholder="Ex: 01 02 03 04 05">
                 <label>Téléphone Mobile :</label>
                 <input type="text" id="inputMobile" placeholder="Ex: 06 07 08 09 10">
-                
-                <!-- NOUVEAU CHAMP E-MAIL -->
                 <label>Adresse e-mail :</label>
                 <input type="email" id="inputEmail" placeholder="Ex: jean.dupont@exemple.com">
-                
                 <label>Adresse postale :</label>
                 <input type="text" id="inputAdresse" placeholder="Ex: 12 rue de la paix">
                 <label>Photo :</label>
@@ -631,8 +666,6 @@
 
         const affichageFixe = contact.fixe ? `<a href="tel:${lienFixe}" class="lien-tel">${contact.fixe}</a>` : 'Non renseigné';
         const affichageMobile = contact.mobile ? `<a href="tel:${lienMobile}" class="lien-tel">${contact.mobile}</a>` : 'Non renseigné';
-        
-        // Affichage dynamique de l'e-mail avec lien cliquable
         const affichageEmail = contact.email ? `<a href="mailto:${contact.email}" class="lien-mail">${contact.email}</a>` : 'Non renseigné';
 
         zoneFiche.className = "fiche-active";
@@ -670,7 +703,7 @@
         document.getElementById("inputNom").value = contact.nom || "";
         document.getElementById("inputFixe").value = contact.fixe || "";
         document.getElementById("inputMobile").value = contact.mobile || "";
-        document.getElementById("inputEmail").value = contact.email || ""; // Charge le mail existant
+        document.getElementById("inputEmail").value = contact.email || "";
         document.getElementById("inputAdresse").value = contact.adresse || "";
         document.getElementById("zoneFormulaire").classList.remove("cacher");
     }
@@ -689,7 +722,7 @@
                 nom: document.getElementById("inputNom").value,
                 fixe: document.getElementById("inputFixe").value,
                 mobile: document.getElementById("inputMobile").value,
-                email: document.getElementById("inputEmail").value, // Récupère le mail
+                email: document.getElementById("inputEmail").value,
                 adresse: document.getElementById("inputAdresse").value,
                 photo: photoData
             };
@@ -728,6 +761,56 @@
             filtrerContacts(lettreActive);
             retourALaListe();
         }
+    }
+
+    /* --- FONCTIONS DE SAUVEGARDE ET SYNCHRONISATION (EXPORTER/IMPORTER) --- */
+    function exporterContacts() {
+        const donneesTextuelles = JSON.stringify(contacts, null, 2);
+        const blob = new Blob([donneesTextuelles], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        
+        const baliseLien = document.createElement("a");
+        baliseLien.href = url;
+        baliseLien.download = "sauvegarde_contacts.json";
+        document.body.appendChild(baliseLien);
+        baliseLien.click();
+        document.body.removeChild(baliseLien);
+        URL.revokeObjectURL(url);
+    }
+
+    function declencherImport() {
+        document.getElementById("inputFichierImport").click();
+    }
+
+    function importerContacts(event) {
+        const fichier = event.target.files[0];
+        if (!fichier) return;
+
+        const lecteur = new FileReader();
+        lecteur.onload = function(e) {
+            try {
+                const contactsImportes = JSON.parse(e.target.result);
+                if (Array.isArray(contactsImportes)) {
+                    if (confirm(`Voulez-vous écraser vos contacts actuels pour charger les ${contactsImportes.length} contacts importés ?`)) {
+                        contacts = contactsImportes;
+                        sauvegarder();
+                        lettreActive = "";
+                        genererAlphabet();
+                        const zoneListe = document.getElementById("zoneListe");
+                        if (zoneListe) {
+                            zoneListe.innerHTML = `<p style="color:#2ecc71; padding:10px; text-align:center; font-weight:bold;">✅ Synchronisation réussie ! Choisissez une lettre.</p>`;
+                        }
+                        retourALaListe();
+                    }
+                } else {
+                    alert("Erreur : Le format du fichier de sauvegarde est invalide.");
+                }
+            } catch (erreur) {
+                alert("Impossible de lire le fichier de sauvegarde.");
+            }
+        };
+        lecteur.readAsText(fichier);
+        event.target.value = ""; // Réinitialise l'input
     }
     </script>
 </body>
