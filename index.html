@@ -6,14 +6,23 @@
     <title>Mon Répertoire de A à Z</title>
     <link class="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
+    <!-- Importation de polices Google Fonts sympas pour la personnalisation -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Cinzel:wght@600&family=Montserrat:wght@700&family=Playfair+Display:ital,wght@0,700;1,400&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
         /* --- VARIABLES DE STYLE PAR DÉFAUT --- */
         :root {
             --bg-garde: #2c3e50;
             --btn-ouvrir: #d35400;
-            --police-garde: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --theme-app: #2c3e50;
             --theme-accent: #3498db;
+            
+            /* Styles spécifiques Titre */
+            --couleur-titre: #f5f6fa;
+            --font-titre: 'Playfair Display', Georgia, serif;
+            
+            /* Styles spécifiques Sous-titre */
+            --couleur-soustitre: #bdc3c7;
+            --font-soustitre: -apple-system, sans-serif;
         }
 
         /* --- DESIGN GÉNÉRAL ET POLICES --- */
@@ -41,7 +50,6 @@
             position: relative;
             box-sizing: border-box;
             overflow: hidden;
-            font-family: var(--police-garde);
         }
 
         .page-garde::before {
@@ -66,7 +74,7 @@
         .contenu-garde {
             padding: 20px;
             width: 80%;
-            max-width: 400px;
+            max-width: 450px;
             box-sizing: border-box;
             z-index: 2;
             display: flex;
@@ -75,19 +83,22 @@
         }
 
         .contenu-garde h1 {
-            font-size: 3rem;
+            font-size: 3.2rem;
             margin-bottom: 15px;
-            color: #f5f6fa;
+            color: var(--couleur-titre);
+            font-family: var(--font-titre);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
             letter-spacing: 1px;
+            word-break: break-word;
         }
 
         .contenu-garde p {
-            font-size: 1.3rem;
-            font-style: italic;
-            color: #bdc3c7;
+            font-size: 1.4rem;
+            color: var(--couleur-soustitre);
+            font-family: var(--font-soustitre);
             margin-bottom: 50px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            word-break: break-word;
         }
 
         .btn-entrer {
@@ -120,7 +131,7 @@
             box-sizing: border-box;
         }
 
-        /* --- BARRE HAUTE ÉPURÉE AVEC SEULEMENT RÉGLAGES --- */
+        /* --- BARRE HAUTE ÉPURÉE --- */
         .barre-outils-haut {
             position: absolute;
             top: 15px;
@@ -212,7 +223,7 @@
             color: var(--theme-accent);
         }
 
-        /* 3. Fiche Détail (PC) */
+        /* Fiche Détail (PC) */
         .fiche-contact {
             flex: 1;
             background-color: #f5f6fa;
@@ -312,7 +323,7 @@
             padding-bottom: 10px;
         }
         .section-reglage {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
@@ -346,7 +357,7 @@
             border-radius: 6px;
             border: 1px solid #bdc3c7;
             font-size: 1rem;
-            width: 150px;
+            width: 180px;
         }
         .grille-boutons-reglages {
             display: grid;
@@ -463,14 +474,13 @@
             text-align: center;
         }
 
-        /* --- OPTIMISATION MODE SMARTPHONE (IPHONE) --- */
+        /* --- OPTIMISATION MODE SMARTPHONE --- */
         @media (max-width: 768px) {
             .app-container {
                 display: flex !important;
                 flex-direction: column !important;
                 height: 100vh;
             }
-            /* La barre d'outils ne contient que le bouton Réglages bien propre */
             .barre-outils-haut {
                 position: absolute;
                 top: 0; left: 0; right: 0;
@@ -630,7 +640,7 @@
     <!-- APPLICATION -->
     <div class="app-container cacher">
         
-        <!-- BARRE HAUTE ÉPURÉE (RÉGLAGES SEULEMENT) -->
+        <!-- BARRE HAUTE RÉGLAGES -->
         <div class="barre-outils-haut">
             <button class="btn-reglages-declencheur" onclick="ouvrirReglages()">⚙️ Réglages</button>
         </div>
@@ -657,14 +667,14 @@
         </section>
     </div>
 
-    <!-- POP-UP MENU RÉGLAGES COMPLET -->
+    <!-- POP-UP MENU RÉGLAGES MIS À JOUR -->
     <div id="zoneReglages" class="modal-reglages cacher">
         <div class="contenu-reglages">
             <h2>⚙️ Réglages & Thèmes</h2>
             
-            <!-- Personnalisation Page de garde -->
+            <!-- Personnalisation Fond & Bouton -->
             <div class="section-reglage">
-                <h4>Carnet / Page de garde</h4>
+                <h4>Général & Couleurs</h4>
                 <div class="option-ligne">
                     <span>Couleur de fond :</span>
                     <input type="color" id="cfgBgGarde" onchange="appliquerStylesTemporaires()">
@@ -673,12 +683,42 @@
                     <span>Bouton Ouvrir :</span>
                     <input type="color" id="cfgBtnOuvrir" onchange="appliquerStylesTemporaires()">
                 </div>
+            </div>
+
+            <!-- NOUVEAU : Réglages précis du Titre -->
+            <div class="section-reglage">
+                <h4>Ligne 1 : Titre (« Répertoire »)</h4>
                 <div class="option-ligne">
-                    <span>Style d'écriture :</span>
-                    <select id="cfgPoliceGarde" onchange="appliquerStylesTemporaires()">
-                        <option value="-apple-system, sans-serif">Moderne (Sans-Serif)</option>
-                        <option value="Georgia, serif">Classique (Georgia)</option>
-                        <option value="'Courier New', monospace">Machine (Monospace)</option>
+                    <span>Couleur :</span>
+                    <input type="color" id="cfgCouleurTitre" onchange="appliquerStylesTemporaires()">
+                </div>
+                <div class="option-ligne">
+                    <span>Police :</span>
+                    <select id="cfgFontTitre" onchange="appliquerStylesTemporaires()">
+                        <option value="Montserrat, sans-serif">Moderne Épais (Montserrat)</option>
+                        <option value="'Playfair Display', serif">Classique Chic (Playfair)</option>
+                        <option value="Cinzel, serif">Impérial / Vintage (Cinzel)</option>
+                        <option value="Caveat, cursive">Manuscrit (Caveat)</option>
+                        <option value="Orbitron, sans-serif">Futuriste (Orbitron)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- NOUVEAU : Réglages précis du Sous-titre -->
+            <div class="section-reglage">
+                <h4>Ligne 2 : Sous-titre (« Mes Contacts »)</h4>
+                <div class="option-ligne">
+                    <span>Couleur :</span>
+                    <input type="color" id="cfgCouleurSoustitre" onchange="appliquerStylesTemporaires()">
+                </div>
+                <div class="option-ligne">
+                    <span>Police :</span>
+                    <select id="cfgFontSoustitre" onchange="appliquerStylesTemporaires()">
+                        <option value="-apple-system, sans-serif">Moderne Simple (System)</option>
+                        <option value="'Playfair Display', italic, serif">Classique Italique</option>
+                        <option value="Montserrat, sans-serif">Épuré (Montserrat)</option>
+                        <option value="Caveat, cursive">Manuscrit Épais (Caveat)</option>
+                        <option value="Orbitron, sans-serif">Futuriste (Orbitron)</option>
                     </select>
                 </div>
             </div>
@@ -757,41 +797,57 @@
     let lettreActive = "";
     let contactEnCoursDeModification = null;
 
-    // --- CHARGEMENT DU THÈME CONFIGURÉ ---
+    // --- CHARGEMENT DU THÈME ---
     function chargerTheme() {
         const racine = document.documentElement;
         racine.style.setProperty('--bg-garde', localStorage.getItem('theme_bg-garde') || '#2c3e50');
         racine.style.setProperty('--btn-ouvrir', localStorage.getItem('theme_btn-ouvrir') || '#d35400');
-        racine.style.setProperty('--police-garde', localStorage.getItem('theme_police-garde') || '-apple-system, sans-serif');
         racine.style.setProperty('--theme-app', localStorage.getItem('theme_theme-app') || '#2c3e50');
         racine.style.setProperty('--theme-accent', localStorage.getItem('theme_theme-accent') || '#3498db');
+        
+        // Nouveaux chargements
+        racine.style.setProperty('--couleur-titre', localStorage.getItem('theme_couleur-titre') || '#f5f6fa');
+        racine.style.setProperty('--font-titre', localStorage.getItem('theme_font-titre') || "'Playfair Display', serif");
+        racine.style.setProperty('--couleur-soustitre', localStorage.getItem('theme_couleur-soustitre') || '#bdc3c7');
+        racine.style.setProperty('--font-soustitre', localStorage.getItem('theme_font-soustitre') || '-apple-system, sans-serif');
 
-        // Mettre à jour les champs de saisie des réglages
+        // Mettre à jour les champs
         document.getElementById('cfgBgGarde').value = getComputedStyle(racine).getPropertyValue('--bg-garde').trim();
         document.getElementById('cfgBtnOuvrir').value = getComputedStyle(racine).getPropertyValue('--btn-ouvrir').trim();
-        document.getElementById('cfgPoliceGarde').value = getComputedStyle(racine).getPropertyValue('--police-garde').trim();
         document.getElementById('cfgThemeApp').value = getComputedStyle(racine).getPropertyValue('--theme-app').trim();
         document.getElementById('cfgThemeAccent').value = getComputedStyle(racine).getPropertyValue('--theme-accent').trim();
+        
+        document.getElementById('cfgCouleurTitre').value = getComputedStyle(racine).getPropertyValue('--couleur-titre').trim();
+        document.getElementById('cfgFontTitre').value = getComputedStyle(racine).getPropertyValue('--font-titre').trim();
+        document.getElementById('cfgCouleurSoustitre').value = getComputedStyle(racine).getPropertyValue('--couleur-soustitre').trim();
+        document.getElementById('cfgFontSoustitre').value = getComputedStyle(racine).getPropertyValue('--font-soustitre').trim();
     }
 
     function appliquerStylesTemporaires() {
         const racine = document.documentElement;
         racine.style.setProperty('--bg-garde', document.getElementById('cfgBgGarde').value);
         racine.style.setProperty('--btn-ouvrir', document.getElementById('cfgBtnOuvrir').value);
-        racine.style.setProperty('--police-garde', document.getElementById('cfgPoliceGarde').value);
         racine.style.setProperty('--theme-app', document.getElementById('cfgThemeApp').value);
         racine.style.setProperty('--theme-accent', document.getElementById('cfgThemeAccent').value);
+        
+        racine.style.setProperty('--couleur-titre', document.getElementById('cfgCouleurTitre').value);
+        racine.style.setProperty('--font-titre', document.getElementById('cfgFontTitre').value);
+        racine.style.setProperty('--couleur-soustitre', document.getElementById('cfgCouleurSoustitre').value);
+        racine.style.setProperty('--font-soustitre', document.getElementById('cfgFontSoustitre').value);
     }
 
     function sauvegarderTheme() {
         localStorage.setItem('theme_bg-garde', document.getElementById('cfgBgGarde').value);
         localStorage.setItem('theme_btn-ouvrir', document.getElementById('cfgBtnOuvrir').value);
-        localStorage.setItem('theme_police-garde', document.getElementById('cfgPoliceGarde').value);
         localStorage.setItem('theme_theme-app', document.getElementById('cfgThemeApp').value);
         localStorage.setItem('theme_theme-accent', document.getElementById('cfgThemeAccent').value);
+        
+        localStorage.setItem('theme_couleur-titre', document.getElementById('cfgCouleurTitre').value);
+        localStorage.setItem('theme_font-titre', document.getElementById('cfgFontTitre').value);
+        localStorage.setItem('theme_couleur-soustitre', document.getElementById('cfgCouleurSoustitre').value);
+        localStorage.setItem('theme_font-soustitre', document.getElementById('cfgFontSoustitre').value);
     }
 
-    // Initialisation du thème au lancement
     chargerTheme();
 
     function sauvegarder() { try { localStorage.setItem("mes_contacts", JSON.stringify(contacts)); } catch (e) {} }
