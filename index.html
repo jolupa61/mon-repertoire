@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Répertoire de A à Z</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link class="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <style>
         /* --- DESIGN GÉNÉRAL ET POLICES --- */
@@ -150,6 +150,9 @@
         .btn-export { background-color: #27ae60; }
         .btn-import { background-color: #8e44ad; }
         .btn-mdp { background-color: #f39c12; }
+
+        /* Permet de masquer le texte des boutons sur mobile */
+        .texte-bouton { display: inline; }
 
         .onglets-az {
             width: 60px;
@@ -379,7 +382,7 @@
             text-align: center;
         }
 
-        /* --- MODE SMARTPHONE (IPHONE) --- */
+        /* --- OPTIMISATION MODE SMARTPHONE (IPHONE) --- */
         @media (max-width: 768px) {
             .app-container {
                 display: flex !important;
@@ -387,23 +390,34 @@
                 height: 100vh;
             }
             .barre-outils-haut {
-                top: 12px;
-                right: 15px;
-                gap: 5px;
+                top: 10px;
+                right: 10px;
+                gap: 6px;
+            }
+            /* On cache le texte des petits boutons pour ne garder que les émojis bien visibles */
+            .texte-bouton { 
+                display: none !important; 
             }
             .btn-retour-garde {
-                padding: 6px 12px;
-                font-size: 0.8rem;
+                padding: 10px 14px;
+                font-size: 1.1rem;
+                border-radius: 6px;
             }
             .btn-synchro {
-                padding: 6px 10px;
-                font-size: 0.75rem;
+                padding: 10px 14px;
+                font-size: 1.2rem; /* Émojis agrandis et très lisibles */
+                border-radius: 6px;
+                min-width: 44px;  /* Taille recommandée par Apple pour le ciblage au doigt */
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             .onglets-az {
                 width: 100% !important;
                 flex-direction: row !important;
                 overflow-x: auto !important;
-                padding: 60px 10px 10px 10px !important;
+                padding: 65px 10px 10px 10px !important;
                 border-right: none;
                 border-bottom: 1px solid #e2e8f0;
                 box-sizing: border-box;
@@ -506,12 +520,12 @@
         <!-- BARRE D'OUTILS ET DE FERMETURE EN HAUT À DROITE -->
         <div class="barre-outils-haut">
             <div class="zone-synchro">
-                <button class="btn-synchro btn-export" onclick="exporterContacts()">📥 Exporter</button>
-                <button class="btn-synchro btn-import" onclick="declencherImport()">📤 Importer</button>
-                <button class="btn-synchro btn-mdp" onclick="changerMotDePasse()">🔑 MDP</button>
+                <button class="btn-synchro btn-export" onclick="exporterContacts()">📥<span class="texte-bouton"> Exporter</span></button>
+                <button class="btn-synchro btn-import" onclick="declencherImport()">📤<span class="texte-bouton"> Importer</span></button>
+                <button class="btn-synchro btn-mdp" onclick="changerMotDePasse()">🔑<span class="texte-bouton"> MDP</span></button>
                 <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
             </div>
-            <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪 Fermer</button>
+            <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪<span class="texte-bouton"> Fermer</span></button>
         </div>
 
         <!-- 1. Onglets A-Z -->
@@ -563,7 +577,6 @@
 
     <!-- SCRIPT APPLICATION -->
     <script>
-    // Récupération ou initialisation du mot de passe dans la mémoire locale (par défaut : 1234)
     let mdpSecret = localStorage.getItem("repertoire_mdp");
     if (!mdpSecret) {
         mdpSecret = "1234";
