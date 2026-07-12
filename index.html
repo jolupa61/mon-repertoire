@@ -111,10 +111,18 @@
             box-sizing: border-box;
         }
 
-        .btn-retour-garde {
+        /* --- BARRE DE MENU TOUT EN HAUT À DROITE --- */
+        .barre-outils-haut {
             position: absolute;
             top: 15px;
             right: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn-retour-garde {
             background-color: #e74c3c;
             color: white;
             border: none;
@@ -123,8 +131,24 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 0.9rem;
-            z-index: 10;
         }
+
+        .zone-synchro {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-synchro {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+        }
+        .btn-export { background-color: #27ae60; }
+        .btn-import { background-color: #8e44ad; }
 
         .onglets-az {
             width: 60px;
@@ -162,7 +186,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .btn-ajouter-contact {
             background-color: #3498db;
@@ -175,29 +199,6 @@
             font-size: 1.1rem;
         }
         
-        /* --- ZONE SYNCHRO DEVENUE HAUT GAUCHE --- */
-        .zone-synchro {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 15px;
-        }
-        .btn-synchro {
-            flex: 1;
-            padding: 8px 10px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            cursor: pointer;
-            color: white;
-            text-align: center;
-        }
-        .btn-export { background-color: #27ae60; }
-        .btn-import { background-color: #8e44ad; }
-
         #zoneListe {
             flex: 1;
             overflow-y: auto;
@@ -384,6 +385,19 @@
                 flex-direction: column !important;
                 height: 100vh;
             }
+            .barre-outils-haut {
+                top: 12px;
+                right: 15px;
+                gap: 5px;
+            }
+            .btn-retour-garde {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .btn-synchro {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
             .onglets-az {
                 width: 100% !important;
                 flex-direction: row !important;
@@ -487,8 +501,16 @@
 
     <!-- APPLICATION -->
     <div class="app-container cacher">
-        <!-- BOUTON RETOUR PAGE DE GARDE -->
-        <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪 Fermer</button>
+        
+        <!-- BARRE D'OUTILS ET DE FERMETURE EN HAUT À DROITE -->
+        <div class="barre-outils-haut">
+            <div class="zone-synchro">
+                <button class="btn-synchro btn-export" onclick="exporterContacts()">📥 Exporter</button>
+                <button class="btn-synchro btn-import" onclick="declencherImport()">📤 Importer</button>
+                <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
+            </div>
+            <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪 Fermer</button>
+        </div>
 
         <!-- 1. Onglets A-Z -->
         <nav class="onglets-az" id="ongletsAZ"></nav>
@@ -499,14 +521,6 @@
                 <h2>Contacts</h2>
                 <button class="btn-ajouter-contact" onclick="ouvrirFormulaireAjouter()">➕ Ajouter</button>
             </div>
-            
-            <!-- BOUTONS DE SAUVEGARDE ET SYNCHRONISATION EN HAUT A GAUCHE -->
-            <div class="zone-synchro">
-                <button class="btn-synchro btn-export" onclick="exporterContacts()">📥 Exporter</button>
-                <button class="btn-synchro btn-import" onclick="declencherImport()">📤 Importer</button>
-                <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
-            </div>
-
             <div id="zoneListe"></div>
         </section>
 
@@ -687,10 +701,6 @@
             </div>
         `;
         document.getElementById("ficheContact").classList.add("mobile-active");
-    }
-
-    function abrirFormulaireAjouter() {
-        ouvrirFormulaireAjouter();
     }
 
     function ouvrirFormulaireAjouter() {
