@@ -149,6 +149,7 @@
         }
         .btn-export { background-color: #27ae60; }
         .btn-import { background-color: #8e44ad; }
+        .btn-mdp { background-color: #f39c12; }
 
         .onglets-az {
             width: 60px;
@@ -507,6 +508,7 @@
             <div class="zone-synchro">
                 <button class="btn-synchro btn-export" onclick="exporterContacts()">📥 Exporter</button>
                 <button class="btn-synchro btn-import" onclick="declencherImport()">📤 Importer</button>
+                <button class="btn-synchro btn-mdp" onclick="changerMotDePasse()">🔑 MDP</button>
                 <input type="file" id="inputFichierImport" accept=".json" style="display: none;" onchange="importerContacts(event)">
             </div>
             <button onclick="fermerRepertoire()" class="btn-retour-garde">🚪 Fermer</button>
@@ -561,7 +563,12 @@
 
     <!-- SCRIPT APPLICATION -->
     <script>
-    const MOT_DE_PASSE_SECRET = "1953"; 
+    // Récupération ou initialisation du mot de passe dans la mémoire locale (par défaut : 1234)
+    let mdpSecret = localStorage.getItem("repertoire_mdp");
+    if (!mdpSecret) {
+        mdpSecret = "1234";
+        localStorage.setItem("repertoire_mdp", mdpSecret);
+    }
 
     let contacts = null;
     try {
@@ -589,11 +596,37 @@
     function verifierMotDePasse() {
         const saisie = prompt("Veuillez saisir le mot de passe pour accéder au répertoire :");
         
-        if (saisie === MOT_DE_PASSE_SECRET) {
+        if (saisie === mdpSecret) {
             ouvrirRepertoire();
         } else if (saisie !== null) {
-            alert("Mot de passe incorrect ! Access refusé.");
+            alert("Mot de passe incorrect ! Accès refusé.");
         }
+    }
+
+    function changerMotDePasse() {
+        const ancien = prompt("Saisissez votre mot de passe actuel :");
+        if (ancien === null) return;
+        
+        if (ancien !== mdpSecret) {
+            alert("Mot de passe actuel incorrect ! Modification annulée.");
+            return;
+        }
+
+        const nouveau = prompt("Saisissez votre NOUVEAU mot de passe :");
+        if (!nouveau) {
+            alert("Le mot de passe ne peut pas être vide !");
+            return;
+        }
+
+        const confirmation = prompt("Confirmez votre nouveau mot de passe :");
+        if (nouveau !== confirmation) {
+            alert("Les deux saisies ne correspondent pas ! Modification annulée.");
+            return;
+        }
+
+        mdpSecret = nouveau;
+        localStorage.setItem("repertoire_mdp", mdpSecret);
+        alert("🔑 Mot de passe mis à jour avec succès !");
     }
 
     function ouvrirRepertoire() {
@@ -778,7 +811,7 @@
         }
     }
 
-    /* --- FONCTIONS DE SAUVEGARDE ET SYNCHRONISATION (EXPORTER/IMPORTER) --- */
+    /* --- FONCTIONS DE SAUVEGARDE ET SYNCHRONISATION --- */
     function exporterContacts() {
         const donneesTextuelles = JSON.stringify(contacts, null, 2);
         const blob = new Blob([donneesTextuelles], { type: "application/json" });
